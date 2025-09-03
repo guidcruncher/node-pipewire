@@ -20,11 +20,12 @@ RUN <<EOF
 mkdir -p /etc/xdg /usr/local/bin /tmp/runtime/mpd
 
 mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
-  $XDG_STATE_HOME $XDG_RUNTIME_DIR
+  $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
 chmod 700 $XDG_RUNTIME_DIR
 EOF
 
 COPY ./config/ ${XDG_CONFIG_HOME}/
+COPY ./config/ /local/.defaults/
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 
 RUN <<EOF
@@ -53,6 +54,5 @@ COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh
 COPY --chmod=755 ./mpc.sh /usr/local/bin/mpc.sh
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 COPY --chmod=755 ./dbus.sh /etc/profile.d/dbus.sh
-COPY --chmod=755 ./mpd /etc/init.d/mpd
 
 CMD ["/usr/local/bin/entrypoint.sh"]

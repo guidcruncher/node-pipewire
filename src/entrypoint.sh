@@ -1,4 +1,5 @@
 #!/bin/sh
+cp /local/.defaults/* /config/ -n -r
 openrc default
 
 rc-update add dbus

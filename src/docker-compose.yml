@@ -7,8 +7,8 @@ services:
       context: .
       network: host
       dockerfile: ./Dockerfile
-#    volumes:
-#      - ./tmp:/transfer
+    volumes:
+      - ../tmp:/local/config
     environment:
       - TZ=Europe/London
       - MEMCACHE=true

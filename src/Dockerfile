@@ -17,7 +17,10 @@ ENV XDG_DATA_DIRS=/usr/local/share:/usr/share
 ENV XDG_CONFIG_DIRS=/etc/xdg
 
 RUN <<EOF
-mkdir -p /etc/xdg /usr/local/bin /tmp/runtime/mpd
+addgroup -S appgroup
+adduser -S appuser -G appgroup -G root -h /home/appuser -D
+mkdir -p /etc/xdg /usr/local/bin /tmp/runtime/mpd /tmp/logs
+chown appuser:appgroup /tmp/logs
 
 mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
   $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
@@ -48,6 +51,10 @@ sed -i '/getty/d' /etc/inittab
 
 /usr/local/bin/update-golibrespot.sh
 npm install -g typescript ts-node tslib @types/node pm2
+
+mkdir -p /local/share/icecast2/logs
+cp /usr/share/icecast/* /local/share/icecast2/ -r
+chown appuser:appgroup /local/share/icecast2 -R
 EOF
 
 WORKDIR /app
@@ -56,6 +63,6 @@ COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh
 COPY --chmod=755 ./mpc.sh /usr/local/bin/mpc.sh
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 COPY --chmod=755 ./dbus.sh /etc/profile.d/dbus.sh
-COPY --chmod=755 ./capture-audio.sh/ usr/local/bin/capture-audio.sh
+COPY --chmod=755 ./capture-audio.sh /usr/local/bin/capture-audio.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]

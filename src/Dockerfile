@@ -39,7 +39,7 @@ apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
-  alsa-plugins mpd mpc ffmpeg \
+  alsa-plugins mpd mpc ffmpeg libcamera \
   curl nano jq xz gzip nodejs-current npm
 
 sed -i '/getty/d' /etc/inittab

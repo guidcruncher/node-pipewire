@@ -1,5 +1,7 @@
 #!/bin/sh
-cp /local/.defaults/* /config/ -n -r
+mkdir -p /local/config /local/cache /local/share /local/state /tmp/runtime
+
+cp -R -u -p /local/.defaults/* /local/config
 openrc default
 
 rc-update add dbus

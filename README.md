@@ -7,10 +7,11 @@ An Alpine Docker image running
 - Wireplumber
 - Pipewire Pulseaudio
 - MPD
+- Icecast2
 - go-libresppt
 - NodeJS + Typescript
 
-## Starting
+## Getting started
 
 A sammple docker-compose.yml is included.
 

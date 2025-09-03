@@ -22,6 +22,8 @@ sleep 10
 
 /usr/bin/mpd -v /local/config/mpd/mpd.conf
 
+icecast -b -c /local/config/icecast/icecast.xml
+
 if [ -n "$1" ]; then
   $@
 fi

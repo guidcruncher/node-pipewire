@@ -29,6 +29,7 @@ COPY ./config/ /local/.defaults/
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 
 RUN <<EOF
+rm /local/.defaults/asound.conf
 mv $XDG_CONFIG_HOME/asound.conf /etc/asound.conf
 
 mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
@@ -38,8 +39,9 @@ mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
 apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
+  pipewire-tools libcamera \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
-  alsa-plugins mpd mpc ffmpeg libcamera \
+  alsa-plugins mpd mpc ffmpeg icecast \
   curl nano jq xz gzip nodejs-current npm
 
 sed -i '/getty/d' /etc/inittab
@@ -54,5 +56,6 @@ COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh
 COPY --chmod=755 ./mpc.sh /usr/local/bin/mpc.sh
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 COPY --chmod=755 ./dbus.sh /etc/profile.d/dbus.sh
+COPY --chmod=755 ./capture-audio.sh/ usr/local/bin/capture-audio.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]

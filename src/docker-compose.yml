@@ -12,6 +12,8 @@ services:
     environment:
       - TZ=Europe/London
       - MEMCACHE=true
+    ports:
+      - 8000:8000
     container_name: pipewire
     hostname: pipewire
     restart: unless-stopped

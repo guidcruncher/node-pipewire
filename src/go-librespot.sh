@@ -1,8 +1,9 @@
 #!/bin/sh
+export GOLIBRESPOT_REGISTERED=false
 
-if [ -f "/local/state/vopidy/.vopidy-auth.json" ]; then
-SPOTIFY_TOKEN=$(cat /local/state/vopidy/.vopidy-auth.json | jq .auth.access_token -r)
-SPOTIFY_USERNAME=$(cat /local/state/vopidy/.vopidy-auth.json | jq .profile.display_name -r)
+if [ -n "$SPOTIFY_AUTHJSON" ] && [ -f "$SPOTIFY_AUTHJSON" ]; then
+  SPOTIFY_TOKEN=$(cat "$SPOTIFY_AUTHJSON" | jq .auth.access_token -r)
+  SPOTIFY_USERNAME=$(cat "$SPOTIFY_AUTHJSON" | jq .profile.display_name -r)
 fi
 
 if [ -f "/local/state/go-librespot.pid" ]; then
@@ -14,14 +15,16 @@ fi
 if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "zeroconf" ]; then
   cp /local/config/go-librespot/config-zeroconf.yml /local/config/go-librespot/config.yml
   /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &
+  export GOLIBRESPOT_REGISTERED=true
 fi
 
-if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "spotify_token" ]; then
+if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "spotify_token" ] && [ -n "$SPOTIFY_USERNAME" ] && [ -n "$SPOTIFY_TOKEN" ]; then
   cat /local/config/go-librespot/config-spotify_token.yml | \
     sed "s/{SPOTIFY_USERNAME}/$SPOTIFY_USERNAME/g" | \
     sed "s/{SPOTIFY_TOKEN}/$SPOTIFY_TOKEN/g" \
     > /local/config/go-librespot/config.yml
   /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &
+  export GOLIBRESPOT_REGISTERED=true
 fi
 
 /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &

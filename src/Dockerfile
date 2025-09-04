@@ -4,7 +4,7 @@ ARG NODE_VERSION=24
 
 ENV DISPLAY=:0
 ENV PULSE_RUNTIME_PATH=/tmp/pulse/
-ENV DISABLE_RTKIT=y
+#ENV DISABLE_RTKIT=y
 ENV PIPEWIRE_RUNTIME_DIR=/tmp/
 ENV TZ=UTC
 
@@ -19,7 +19,8 @@ ENV XDG_CONFIG_DIRS=/etc/xdg
 RUN <<EOF
 addgroup -S appgroup
 addgroup -S pipewire
-adduser -S appuser -G pipewire -G appgroup -G root -h /home/appuser -D
+addgroup -S rtkit
+adduser -S appuser -G rtkit  -G pipewire -G appgroup -G root -h /home/appuser -D
 mkdir -p /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
 chown appuser:appgroup /tmp/logs
 
@@ -43,7 +44,7 @@ mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
 apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
-  pipewire-tools libcamera \
+  pipewire-tools libcamera rtkit \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins mpd mpc ffmpeg icecast \
   curl nano jq xz gzip nodejs-current npm

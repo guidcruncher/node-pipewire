@@ -14,6 +14,8 @@ else
        export DBUS_SESSION_BUS_ADDRESS="$(cat /tmp/dbus-$USER-env)"
 fi
 
+rtkitctl --start
+
 /usr/local/bin/pipewire-launcher.sh
 
 sleep 2

@@ -7,7 +7,7 @@ format="ogg"
 contenttype="audio/ogg"
 codec="flac"
 level=8
-bitrate="128000" 
+bitrate="48000" 
 
 /usr/bin/ffmpeg -f "$input" \
          -i "$device" \

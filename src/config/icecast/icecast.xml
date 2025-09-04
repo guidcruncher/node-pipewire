@@ -172,7 +172,7 @@
         <logdir>/logs</logdir>
         <webroot>/web</webroot>
         <adminroot>/admin</adminroot>
-        <pidfile>/srv/pids/icecast.pid</pidfile>
+        <pidfile>/icecast.pid</pidfile>
 
         <!-- Aliases: treat requests for 'source' path as being for 'dest' path
              May be made specific to a port or bound address using the "port"

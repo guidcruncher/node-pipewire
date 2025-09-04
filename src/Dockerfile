@@ -18,7 +18,8 @@ ENV XDG_CONFIG_DIRS=/etc/xdg
 
 RUN <<EOF
 addgroup -S appgroup
-adduser -S appuser -G appgroup -G root -h /home/appuser -D
+addgroup -S pipewire
+adduser -S appuser -G pipewire -G appgroup -G root -h /home/appuser -D
 mkdir -p /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
 chown appuser:appgroup /tmp/logs
 

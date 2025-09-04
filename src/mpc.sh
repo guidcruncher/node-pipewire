@@ -1,2 +1,2 @@
 #!/bin/bash
-mpc -h /tmp/runtime/mpd/socket $@
+mpc -h /local/state/mpd/socket $@

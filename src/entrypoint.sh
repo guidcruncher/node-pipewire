@@ -16,7 +16,7 @@ fi
 
 /usr/local/bin/pipewire-launcher.sh
 
-sleep 10
+sleep 2
 
 /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &
 

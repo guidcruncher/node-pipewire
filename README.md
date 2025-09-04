@@ -51,7 +51,7 @@ services:
 ```
 This image has rtkit enabled, therefore the mentioned capabilities are reccomended.
 
-Using a host netwoek allows the container to be visible to any Spotify Clients as a speaker device.
+Using a host network allows the container to be visible to any Spotify Clients as a speaker device.
 
 ## Variables
 

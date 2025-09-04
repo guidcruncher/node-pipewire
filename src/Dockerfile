@@ -17,6 +17,9 @@ ENV XDG_DATA_DIRS=/usr/local/share:/usr/share
 ENV XDG_CONFIG_DIRS=/etc/xdg
 ENV MPD_SOCKET=/local/state/mpd/socket
 ENV GOLIBRESPOT_API=http://localhost:3678
+ENV GOLIBRESPOT_CREDENTIAL_TYPE=zeroconf
+ENV SPOTIFY_USERNAME=
+ENV SPOTIFY_TOKEN=
 
 RUN <<EOF
 addgroup -S appgroup -g 1001
@@ -81,5 +84,8 @@ COPY --chmod=755 ./mpc.sh /usr/local/bin/mpc.sh
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
 COPY --chmod=755 ./dbus.sh /etc/profile.d/dbus.sh
 COPY --chmod=755 ./capture-audio.sh /usr/local/bin/capture-audio.sh
+COPY --chmod=755 ./go-librespot.sh /usr/local/bin/go-librespot.sh
+COPY --chmod=755 ./icecast.sh /usr/local/bin/icecast.sh
+COPY --chmod=755 ./mpd.sh /usr/local/bin/mpd.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]

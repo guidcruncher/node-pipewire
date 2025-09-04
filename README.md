@@ -40,6 +40,10 @@ services:
     restart: unless-stopped
     volumes:
       - ./config:/local/config
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          mode: 0o01777
     devices:
       - /dev/snd:/dev/snd:rw
     privileged: true

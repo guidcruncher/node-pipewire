@@ -78,6 +78,7 @@ echo "$TZ" | tee /etc/timezone
 EOF
 
 WORKDIR /app
+COPY ./mime.types /etc/mime.types
 COPY --chmod=755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
 COPY --chmod=755 ./bootstrap.sh /usr/local/bin/bootstrap.sh
 COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh

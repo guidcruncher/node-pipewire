@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -f "/local/state/vopidy/.vopidy-auth.json" ]; then
+SPOTIFY_TOKEN=$(cat /local/state/vopidy/.vopidy-auth.json | jq .auth.access_token -r)
+SPOTIFY_USERNAME=$(cat /local/state/vopidy/.vopidy-auth.json | jq .profile.display_name -r)
+fi
+
 if [ -f "/local/state/go-librespot.pid" ]; then
   kill -9 $(cat /local/state/go-librespot.pid)
   rm /local/state/go-librespot.pid

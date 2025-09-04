@@ -6,7 +6,11 @@ su-exec  root /usr/local/bin/bootstrap.sh
 
 /usr/local/bin/mpd.sh
 
-/usr/local/bin/icecast.sh
+if [ "$ICECAST_ENABLE" == "true" ]; then
+  /usr/local/bin/icecast.sh
+  sleep 2
+  /usr/local/bin/capture-audio.sh &
+fi
 
 if [ -n "$1" ]; then
   $@

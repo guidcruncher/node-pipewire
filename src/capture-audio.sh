@@ -1,21 +1,18 @@
-#/bin/bash
+#/bin/sh
+
 input="pulse"
 device="default"
-channels=2
-samplerate=48000
 format="ogg"
 contenttype="audio/ogg"
 codec="flac"
-level=8
-bitrate="48000" 
 
 /usr/bin/ffmpeg -f "$input" \
          -i "$device" \
-         -ar "$samplerate" \
-         -ac "$channels" \
-         -b:a "$bitrate" \
+         -ar "ICECAST_SAMPLERATE" \
+         -ac "$ICECAST_CHANNELS" \
+         -b:a "$ICECAST_BITRATE" \
          -c:a "$codec" \
-         -compression_level "$level" \
+         -compression_level "$ICECAST_COMPLEVEL" \
          -f "$format" \
          -content_type "$contenttype" \
          icecast://source:pass@localhost:8000/audio-stream

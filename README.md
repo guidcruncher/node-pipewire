@@ -25,7 +25,16 @@ services:
     image: guidcruncher/node-pipewire:latest
     network_mode: host
     environment:
-      - TZ=Europe/London
+      - GOLIBRESPOT_CREDENTIAL_TYPE=zeroconf
+      - ICECAST_BITRATE=48000
+      - ICECAST_CHANNELS=2
+      - ICECAST_COMPLEVEL=5
+      - ICECAST_ENABLE=true
+      - ICECAST_SAMPLERATE=48000
+      - SPOTIFY_AUTHJSON=
+      - SPOTIFY_TOKEN=
+      - SPOTIFY_USERNAME=
+      - TZ=UTC
     container_name: pipewire
     hostname: pipewire
     restart: unless-stopped
@@ -40,8 +49,9 @@ services:
       - CAP_NET_ADMIN
       - SYS_RAWIO
 ```
+This image has rtkit enabled, therefore the mentioned capabilities are reccomended.
 
-# Variables
+## Variables
 
 The environment variables below are comfigurable.
 

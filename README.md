@@ -40,3 +40,22 @@ services:
       - CAP_NET_ADMIN
       - SYS_RAWIO
 ```
+
+# Variables
+
+The environment variables below are comfigurable.
+
+| Name                        | Readonly | Default  | Description                                                                     |
+|-----------------------------|----------|----------|---------------------------------------------------------------------------------|
+| GOLIBRESPOT_API             | Yes      |          | The go-librespot API base url                                                   |
+| GOLIBRESPOT_CREDENTIAL_TYPE | No       | zeroconf | zeroconf or spotify_token                                                       |
+| ICECAST_BITRATE             | No       | 48000    | Icecast bitrate                                                                 |
+| ICECAST_CHANNELS            | No       | 2        | Icecast channels                                                                |
+| ICECAST_COMPLEVEL           | No       | 5        | Icecast compression level (1-10)                                                |
+| ICECAST_ENABLE              | No       | true     | Enable Icecast                                                                  |
+| ICECAST_SAMPLERATE          | No       | 48000    | Icecast sample rate                                                             |
+| MPD_SOCKET                  | Yes      |          | MPD Control socket path                                                         |
+| SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
+| SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
+| SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |
+| TZ                          | No       | UTC      | Timezone                                                                        |

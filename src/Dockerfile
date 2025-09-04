@@ -15,12 +15,17 @@ ENV XDG_STATE_HOME=/local/state
 ENV XDG_RUNTIME_DIR=/tmp/runtime
 ENV XDG_DATA_DIRS=/usr/local/share:/usr/share
 ENV XDG_CONFIG_DIRS=/etc/xdg
+ENV MPD_SOCKET=/local/state/mpd/socket
+ENV GOLIBRESPOT_API=http://localhost:3678
 
 RUN <<EOF
-addgroup -S appgroup
+addgroup -S appgroup -g 1001
 addgroup -S pipewire
 addgroup -S rtkit
-adduser -S appuser -G rtkit  -G pipewire -G appgroup -G root -h /home/appuser -D
+addgroup -S sudo
+getent group sudo
+adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
+
 mkdir -p /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
 chown appuser:appgroup /tmp/logs
 
@@ -42,12 +47,18 @@ mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/hotplugged /etc/runlevels/manual
 
 apk update
-apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc \
+apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
   pipewire-tools libcamera rtkit \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins mpd mpc ffmpeg icecast \
-  curl nano jq xz gzip nodejs-current npm
+  curl nano jq xz gzip nodejs-current npm tzdata su-exec
+
+mkdir -p /run/openrc
+touch /run/openrc/softlevel
+
+echo "%sudo ALL = (ALL) NOPASSWD: ALL " >/etc/sudoers.d/nopasswd
+echo "Defaults exempt_group = sudo " >>/etc/sudoers.d/nopasswd
 
 sed -i '/getty/d' /etc/inittab
 
@@ -57,10 +68,14 @@ npm install -g typescript ts-node tslib @types/node pm2
 mkdir -p /local/share/icecast2/logs
 cp /usr/share/icecast/* /local/share/icecast2/ -r
 chown appuser:appgroup /local/share/icecast2 -R
+
+ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
+echo "$TZ" | tee /etc/timezone
 EOF
 
 WORKDIR /app
 COPY --chmod=755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY --chmod=755 ./bootstrap.sh /usr/local/bin/bootstrap.sh
 COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh
 COPY --chmod=755 ./mpc.sh /usr/local/bin/mpc.sh
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh

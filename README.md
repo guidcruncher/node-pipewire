@@ -13,7 +13,7 @@ An Alpine Docker image running
 
 ## Getting started
 
-A sammple docker-compose.yml is included.
+A sample docker-compose.yml is included and reproduced below.
 
 You can mount the configuration folder by applying a bind mount to /local/config to obtain all the configuration files. 
 

@@ -18,9 +18,19 @@ else
        export DBUS_SESSION_BUS_ADDRESS="$(cat /tmp/dbus-$USER-env)"
 fi
 
-rtkitctl --start
+if [ "$RTLKIT_ENABLE" == "true" ]; then
+  rtkitctl --start
+fi
 
 /usr/local/bin/pipewire-launcher.sh
 
 sleep 2
 
+if [ -d "/usr/local/bin/node-pipewire.d" ]; then
+  for script in /usr/local/bin/node-pipewire.d/*.sh ; do
+    if [ -r "$script" ] ; then
+      . "$script"
+    fi
+  done
+  unset script
+fi

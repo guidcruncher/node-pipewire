@@ -21,6 +21,7 @@ ENV GOLIBRESPOT_CREDENTIAL_TYPE=zeroconf
 ENV SPOTIFY_USERNAME=
 ENV SPOTIFY_TOKEN=
 ENV SPOTIFY_AUTHJSON=
+ENV RTLKIT_ENABLE=true
 
 ENV ICECAST_ENABLE=true
 ENV ICECAST_CHANNELS=2
@@ -36,7 +37,7 @@ addgroup -S sudo
 getent group sudo
 adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
 
-mkdir -p /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
+mkdir -p /usr/local/bin/node-pipewire.d /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
 chown appuser:appgroup /tmp/logs
 
 mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \

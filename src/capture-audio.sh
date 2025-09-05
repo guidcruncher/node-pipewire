@@ -8,7 +8,7 @@ codec="flac"
 
 /usr/bin/ffmpeg -f "$input" \
          -i "$device" \
-         -ar "ICECAST_SAMPLERATE" \
+         -ar "$ICECAST_SAMPLERATE" \
          -ac "$ICECAST_CHANNELS" \
          -b:a "$ICECAST_BITRATE" \
          -c:a "$codec" \

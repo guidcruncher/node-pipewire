@@ -19,7 +19,9 @@ else
 fi
 
 if [ "$RTKIT_ENABLE" == "true" ]; then
-  rtkitctl --start
+  rtkitctl --start 
+else
+  export DISABLE_RTKIT=y
 fi
 
 /usr/local/bin/pipewire-launcher.sh

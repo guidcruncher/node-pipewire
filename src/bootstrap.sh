@@ -18,7 +18,7 @@ else
        export DBUS_SESSION_BUS_ADDRESS="$(cat /tmp/dbus-$USER-env)"
 fi
 
-if [ "$RTLKIT_ENABLE" == "true" ]; then
+if [ "$RTKIT_ENABLE" == "true" ]; then
   rtkitctl --start
 fi
 

@@ -1,4 +1,4 @@
-# node-pipewire
+r# node-pipewire
 
 An Alpine Docker image running
 
@@ -31,7 +31,7 @@ services:
       - ICECAST_COMPLEVEL=5
       - ICECAST_ENABLE=true
       - ICECAST_SAMPLERATE=48000
-      - RTLKIT_ENABLE=true
+      - RTKIT_ENABLE=true
       - SPOTIFY_AUTHJSON=
       - SPOTIFY_TOKEN=
       - SPOTIFY_USERNAME=
@@ -72,7 +72,7 @@ The environment variables below are comfigurable.
 | ICECAST_ENABLE              | No       | true     | Enable Icecast                                                                  |
 | ICECAST_SAMPLERATE          | No       | 48000    | Icecast sample rate                                                             |
 | MPD_SOCKET                  | Yes      |          | MPD Control socket path                                                         |
-| RTLKIT_ENABLE               | No       | true     | Set to true to enable RTKit |
+| RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |

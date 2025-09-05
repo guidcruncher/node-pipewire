@@ -43,6 +43,12 @@ chown appuser:appgroup /tmp/logs
 mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
   $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
 chmod 700 $XDG_RUNTIME_DIR
+
+mkdir -p ${XDG_CONFIG_HOME}/pipewire/pipewire.conf.d \
+${XDG_CONFIG_HOME}/pipewire/pipewire-pulse.conf.d \
+${XDG_CONFIG_HOME}/pipewire/client.conf.d \
+${XDG_CONFIG_HOME}/pipewire/filter-chain.conf.d \
+${XDG_CONFIG_HOME}/pipewire/jack.conf.d
 EOF
 
 COPY ./config/ ${XDG_CONFIG_HOME}/

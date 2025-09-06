@@ -41,6 +41,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./config:/local/config
+      - ./pipewire-config:/pipewire-config
       - type: tmpfs
         target: /tmp
         tmpfs:
@@ -77,3 +78,13 @@ The environment variables below are comfigurable.
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |
 | TZ                          | No       | UTC      | Timezone                                                                        |
+
+Custom Pipewire configuration can be injected via the /pipewire-config bind. Note this overrides any default configuration.
+
+```bash
+pipewire.conf.d
+pipewire-pulse.conf.d
+client.conf.d
+filter-chain.conf.d
+jack.conf
+```

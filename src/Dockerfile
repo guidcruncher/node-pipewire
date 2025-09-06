@@ -37,7 +37,7 @@ addgroup -S sudo
 getent group sudo
 adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
 
-mkdir -p /usr/local/bin/node-pipewire.d /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
+mkdir -p /pipewire-config /usr/local/bin/node-pipewire.d /etc/xdg /usr/local/bin /local/state/mpd /tmp/logs
 chown appuser:appgroup /tmp/logs
 
 mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \

@@ -6,6 +6,9 @@ echo "$TZ" | tee /etc/timezone
 mkdir -p /local/config /local/cache /local/share /local/state /tmp/runtime
 
 cp -R -u -p /local/.defaults/* /local/config
+
+cp -R /pipewire-config/* /local/config/pipewire
+
 openrc default
 
 rc-update add dbus

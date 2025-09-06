@@ -44,6 +44,7 @@ mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
   $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
 chmod 700 $XDG_RUNTIME_DIR
 
+mkdir -p /usr/lib/ladspa/
 mkdir -p ${XDG_CONFIG_HOME}/pipewire/pipewire.conf.d \
 ${XDG_CONFIG_HOME}/pipewire/pipewire-pulse.conf.d \
 ${XDG_CONFIG_HOME}/pipewire/client.conf.d \
@@ -54,6 +55,8 @@ EOF
 COPY ./config/ ${XDG_CONFIG_HOME}/
 COPY ./config/ /local/.defaults/
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
+COPY ./alsa-lib/ /usr/lib/alsa-lib/
+COPY ./ladspa/ /usr/lib/ladspa/
 
 RUN <<EOF
 rm /local/.defaults/asound.conf

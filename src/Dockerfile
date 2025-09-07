@@ -105,5 +105,6 @@ COPY --chmod=755 ./capture-audio.sh /usr/local/bin/capture-audio.sh
 COPY --chmod=755 ./go-librespot.sh /usr/local/bin/go-librespot.sh
 COPY --chmod=755 ./icecast.sh /usr/local/bin/icecast.sh
 COPY --chmod=755 ./mpd.sh /usr/local/bin/mpd.sh
+COPY --chmod=755 ./alsa-capabilities.sh /usr/local/bin/alsa-capabilities.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]

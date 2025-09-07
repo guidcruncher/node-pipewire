@@ -1,4 +1,4 @@
-r# node-pipewire
+# node-pipewire
 
 An Alpine Docker image running
 
@@ -36,6 +36,11 @@ services:
       - SPOTIFY_TOKEN=
       - SPOTIFY_USERNAME=
       - TZ=UTC
+      - ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
+      - ALSA_PLAYBACK_RATE=48000
+      - ALSA_PLAYBACK_FORMAT="S16LE"
+      - ALSA_PLAYBACK_CHANNELS=2
+      - ALSA_PLAYBACK_POSITION="FL,FR"
     container_name: pipewire
     hostname: pipewire
     restart: unless-stopped
@@ -65,6 +70,11 @@ The environment variables below are comfigurable.
 
 | Name                        | Readonly | Default  | Description                                                                     |
 |-----------------------------|----------|----------|---------------------------------------------------------------------------------|
+| ALSA_PLAYBACK_DEVICE| No | hw:AUDIO,0 | Output device address |
+| ALSA_PLAYBACK_RATE| No | 48000 | Output sample rate |
+| ALSA_PLAYBACK_FORMAT| No | S16LE | Output format |
+| ALSA_PLAYBACK_CHANNELS| No | 2 | Number of playback channels |
+| ALSA_PLAYBACK_POSITION| No | FL,FR | Channel to position mapping |
 | GOLIBRESPOT_API             | Yes      |          | The go-librespot API base url                                                   |
 | GOLIBRESPOT_CREDENTIAL_TYPE | No       | zeroconf | zeroconf or spotify_token                                                       |
 | ICECAST_BITRATE             | No       | 48000    | Icecast bitrate                                                                 |

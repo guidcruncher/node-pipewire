@@ -29,6 +29,12 @@ ENV ICECAST_SAMPLERATE=48000
 ENV ICECAST_COMPLEVEL=5
 ENV ICECAST_BITRATE=48000
 
+ENV ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
+ENV ALSA_PLAYBACK_RATE=48000
+ENV ALSA_PLAYBACK_FORMAT="S16LE"
+ENV ALSA_PLAYBACK_CHANNELS=2
+ENV ALSA_PLAYBACK_POSITION="FL,FR"
+
 RUN <<EOF
 addgroup -S appgroup -g 1001
 addgroup -S pipewire
@@ -72,7 +78,7 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire-tools libcamera rtkit \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins mpd mpc ffmpeg icecast \
-  curl nano jq xz gzip nodejs-current npm tzdata su-exec
+  curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
 
 mkdir -p /run/openrc
 touch /run/openrc/softlevel

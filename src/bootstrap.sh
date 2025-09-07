@@ -7,6 +7,11 @@ mkdir -p /local/config /local/cache /local/share /local/state /tmp/runtime
 
 cp -R -u -p /local/.defaults/* /local/config
 
+for file in /local/.defaults/pipewire/*.conf
+do
+  envsubst < "$file" > /local/config/pipewire/$(basename "$file")
+done
+
 cp -R /pipewire-config/* /local/config/pipewire
 
 openrc default

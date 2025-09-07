@@ -93,7 +93,7 @@ function alsa_mute() {
     ## tmpfile; next mute the Master control
     debug "${LINENO}" "trying to mute the Master control"
     type -p alsactl  >/dev/null 2>&1 || return 1
-    ALSA_STATEFILE="$(mktemp "/tmp/${APP_NAME_AC}.XXXXX.alsa.state")"
+    ALSA_STATEFILE="$(mktemp)"
     alsactl store -f "${ALSA_STATEFILE}" >/dev/null 2>&1 || return 1
     amixer set Master mute >/dev/null 2>&1 || return 1
     debug "${LINENO}" "Master control muted: original state saved in \`${ALSA_STATEFILE}'."
@@ -1037,7 +1037,7 @@ function fetch_alsa_interfaces() {
     debug "${LINENO}" "results: ${#FILTERED_INDICE[@]} after filtering ${#ALSA_IDS_CARDS[@]} interfaces"
     after_filtering
     if [[ ${OPT_JSON} ]]; then
-        do_output_json
+        do_output_json | jq
     else
         ## output to terminal when OPT_QUIET is not set
         [[ ${OPT_QUIET} ]] || do_output_terminal

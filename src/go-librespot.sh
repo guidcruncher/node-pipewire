@@ -6,6 +6,7 @@ if [ -n "$SPOTIFY_AUTHJSON" ] && [ -f "$SPOTIFY_AUTHJSON" ]; then
   SPOTIFY_USERNAME=$(cat "$SPOTIFY_AUTHJSON" | jq .profile.display_name -r)
 fi
 
+if [ -n "$1" ]  && [ "$1" != "--nokill" ]; then 
 if [ -f "/local/state/go-librespot.pid" ]; then
   kill -9 $(cat /local/state/go-librespot.pid)
   rm /local/state/go-librespot.pid
@@ -14,6 +15,7 @@ fi
 
 if [ -f "/local/config/go-librespot/lockfile" ]; then
   rm /local/config/go-librespot/lockfile
+fi
 fi
 
 if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "zeroconf" ]; then

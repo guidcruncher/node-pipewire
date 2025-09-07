@@ -15,7 +15,7 @@ server:
 
 log_level: trace # Log level configuration (trace, debug, info, warn, error)
 device_id: '' # Spotify device ID (auto-generated)
-device_name: Pipewire # Spotify device name
+device_name: $SPOTIFY_DEVICE_NAME # Spotify device name
 device_type: speaker # Spotify device type (icon)
 audio_backend: alsa # Audio backend to use (alsa, pipe, pulseaudio)
 audio_device: pipewire # ALSA audio device to use for playback

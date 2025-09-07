@@ -12,18 +12,17 @@ if [ -f "/local/state/go-librespot.pid" ]; then
   rm /local/config/go-librespot/lockfile
 fi
 
+if [ -f "/local/config/go-librespot/lockfile" ]; then
+  rm /local/config/go-librespot/lockfile
+fi
+
 if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "zeroconf" ]; then
-  cp /local/config/go-librespot/config-zeroconf.yml /local/config/go-librespot/config.yml
-  /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &
+  envsubst < /local/.defaults/go-librespot/config-zeroconf.yml > /local/config/go-librespot/config.yml
   export GOLIBRESPOT_REGISTERED=true
 fi
 
 if [ "$GOLIBRESPOT_CREDENTIAL_TYPE" == "spotify_token" ] && [ -n "$SPOTIFY_USERNAME" ] && [ -n "$SPOTIFY_TOKEN" ]; then
-  cat /local/config/go-librespot/config-spotify_token.yml | \
-    sed "s/{SPOTIFY_USERNAME}/$SPOTIFY_USERNAME/g" | \
-    sed "s/{SPOTIFY_TOKEN}/$SPOTIFY_TOKEN/g" \
-    > /local/config/go-librespot/config.yml
-  /usr/local/bin/go-librespot --config_dir /local/config/go-librespot/ &
+  envsubst < /local/.defaults/go-librespot/config-spotify_token.yml > /local/config/go-librespot/config.yml
   export GOLIBRESPOT_REGISTERED=true
 fi
 

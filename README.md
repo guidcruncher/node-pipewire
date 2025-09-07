@@ -35,6 +35,7 @@ services:
       - SPOTIFY_AUTHJSON=
       - SPOTIFY_TOKEN=
       - SPOTIFY_USERNAME=
+      - SPOTIFY_DEVICE_NAME=Pipewire
       - TZ=UTC
       - ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
       - ALSA_PLAYBACK_RATE=48000
@@ -70,11 +71,11 @@ The environment variables below are comfigurable.
 
 | Name                        | Readonly | Default  | Description                                                                     |
 |-----------------------------|----------|----------|---------------------------------------------------------------------------------|
-| ALSA_PLAYBACK_DEVICE| No | hw:AUDIO,0 | Output device address |
-| ALSA_PLAYBACK_RATE| No | 48000 | Output sample rate |
-| ALSA_PLAYBACK_FORMAT| No | S16LE | Output format |
-| ALSA_PLAYBACK_CHANNELS| No | 2 | Number of playback channels |
-| ALSA_PLAYBACK_POSITION| No | FL,FR | Channel to position mapping |
+| ALSA_PLAYBACK_DEVICE        | No       |          | ALSA Output device address                                                      |
+| ALSA_PLAYBACK_RATE          | No       | 48000    | Playback Output rate                                                            |
+| ALSA_PLAYBACK_FORMAT        | No       | S16LE    | Output format                                                                   |
+| ALSA_PLAYBACK_CHANNELS      | No       | 2        | Number of playback channels                                                     |
+| ALSA_PLAYBACK_POSITION      | No       | FL,FR    | Channel to position mapping (Comma Seperated)                                   |
 | GOLIBRESPOT_API             | Yes      |          | The go-librespot API base url                                                   |
 | GOLIBRESPOT_CREDENTIAL_TYPE | No       | zeroconf | zeroconf or spotify_token                                                       |
 | ICECAST_BITRATE             | No       | 48000    | Icecast bitrate                                                                 |
@@ -83,13 +84,15 @@ The environment variables below are comfigurable.
 | ICECAST_ENABLE              | No       | true     | Enable Icecast                                                                  |
 | ICECAST_SAMPLERATE          | No       | 48000    | Icecast sample rate                                                             |
 | MPD_SOCKET                  | Yes      |          | MPD Control socket path                                                         |
-| RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit |
+| RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit                                                     |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |
+| SPOTIFY_DEVICE_NAME         | No       | Pipewire | Device name as it appears to other Spotify clients                              |
 | TZ                          | No       | UTC      | Timezone                                                                        |
 
-Custom Pipewire configuration can be injected via the /pipewire-config bind. Note this overrides any default configuration.
+Custom Pipewire configuration can be injected via the /pipewire-config bind. Note this overrides any default configuration or values 
+set by environment variables.
 
 ```bash
 pipewire.conf.d

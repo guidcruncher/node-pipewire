@@ -3,8 +3,8 @@ zeroconf_port: 41899 # The port to use for Zeroconf, 0 for random
 credentials:
   type: spotify_token
   spotify_token:
-    username: "{SPOTIFY_USERNAME}"
-    access_token: "{SPOTIFY_TOKEN}"
+    username: "$SPOTIFY_USERNAME"
+    access_token: "$SPOTIFY_TOKEN"
   zeroconf:
     persist_credentials: true # Whether to persist zeroconf user credentials even after disconnecting
 
@@ -18,7 +18,7 @@ server:
 
 log_level: trace # Log level configuration (trace, debug, info, warn, error)
 device_id: '' # Spotify device ID (auto-generated)
-device_name: Pipewire # Spotify device name
+device_name: $SPOTIFY_DEVICE_NAME # Spotify device name
 device_type: speaker # Spotify device type (icon)
 audio_backend: alsa # Audio backend to use (alsa, pipe, pulseaudio)
 audio_device: pipewire # ALSA audio device to use for playback

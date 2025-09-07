@@ -12,6 +12,11 @@ do
   envsubst < "$file" > /local/config/pipewire/$(basename "$file")
 done
 
+for file in /local/.defaults/go-librespot/*.yml
+do
+  envsubst < "$file" > /local/config/go-librespot/$(basename "$file")
+done
+
 cp -R /pipewire-config/* /local/config/pipewire
 
 openrc default

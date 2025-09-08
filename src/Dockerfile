@@ -23,6 +23,10 @@ ENV SPOTIFY_DEVICE_NAME=Pipewire
 ENV SPOTIFY_AUTHJSON=
 ENV RTKIT_ENABLE=true
 
+ENV PM2_BASE_HOME=${XDG_STATE_HOME}/pm2/base
+ENV PM2_CONTAINER_HOME=${XDG_STATE_HOME}/pm2/container
+ENV PM2_HOME=${PM2_CONTAINER_HOME}
+
 ENV ICECAST_ENABLE=true
 ENV ICECAST_CHANNELS=2
 ENV ICECAST_SAMPLERATE=48000
@@ -50,23 +54,28 @@ mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
   $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
 chmod 700 $XDG_RUNTIME_DIR
 
-mkdir -p /usr/lib/ladspa/
+mkdir -p /usr/lib/ladspa/ /local/config/pm2 /local/.defaults
 mkdir -p ${XDG_CONFIG_HOME}/pipewire/pipewire.conf.d \
 ${XDG_CONFIG_HOME}/pipewire/pipewire-pulse.conf.d \
 ${XDG_CONFIG_HOME}/pipewire/client.conf.d \
 ${XDG_CONFIG_HOME}/pipewire/filter-chain.conf.d \
-${XDG_CONFIG_HOME}/pipewire/jack.conf.d
+${XDG_CONFIG_HOME}/pipewire/jack.conf.d \
+${XDG_CONFIG_HOME}/pm2 \
+${PM2_BASE_HOME} ${PM2_CONTAINER_HOME}
 EOF
+
 
 COPY ./config/ ${XDG_CONFIG_HOME}/
 COPY ./config/ /local/.defaults/
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
-COPY ./alsa-lib/ /usr/lib/alsa-lib/
+COPY ./alsa-lib/ /usr/lib/als
 COPY ./ladspa/ /usr/lib/ladspa/
+RUN mkdir -p /local/config/pm2/
+COPY ./ecosystem.config.cjs /local/config/pm2
+
 
 RUN <<EOF
-rm /local/.defaults/asound.conf
-mv $XDG_CONFIG_HOME/asound.conf /etc/asound.conf
+cp /local/.defaults/asound.conf /etc/asound.conf
 
 mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
@@ -112,5 +121,9 @@ COPY --chmod=755 ./go-librespot.sh /usr/local/bin/go-librespot.sh
 COPY --chmod=755 ./icecast.sh /usr/local/bin/icecast.sh
 COPY --chmod=755 ./mpd.sh /usr/local/bin/mpd.sh
 COPY --chmod=755 ./alsa-capabilities.sh /usr/local/bin/alsa-capabilities.sh
+COPY --chmod=755 ./pm2.sh /usr/local/bin/pm2.sh
+COPY --chmod=755 ./pm2base.sh /usr/local/bin/pm2base.sh
+
 
 CMD ["/usr/local/bin/entrypoint.sh"]
+

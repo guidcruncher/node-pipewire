@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
+
 ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
 echo "$TZ" | tee /etc/timezone
 
@@ -23,6 +25,8 @@ openrc default
 
 rc-update add dbus
 rc-service dbus start
+
+rc-service bluetooth start
 
 if [ ! -e "/tmp/dbus-$USER-env" ]; then
        export $(dbus-launch)

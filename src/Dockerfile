@@ -39,6 +39,8 @@ ENV ALSA_PLAYBACK_FORMAT="S16LE"
 ENV ALSA_PLAYBACK_CHANNELS=2
 ENV ALSA_PLAYBACK_POSITION="FL,FR"
 
+ENV MACHINE_NAME="Pipewire"
+
 RUN <<EOF
 addgroup -S appgroup -g 1001
 addgroup -S pipewire
@@ -84,10 +86,13 @@ mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
 apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
-  pipewire-tools libcamera rtkit \
+  pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
-  alsa-plugins mpd mpc ffmpeg icecast \
+  alsa-plugins mpd mpc ffmpeg icecast bluez \
   curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
+
+adduser root lp
+adduser appuser lp
 
 mkdir -p /run/openrc
 touch /run/openrc/softlevel

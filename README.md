@@ -90,6 +90,7 @@ The environment variables below are comfigurable.
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |
 | SPOTIFY_DEVICE_NAME         | No       | Pipewire | Device name as it appears to other Spotify clients                              |
 | TZ                          | No       | UTC      | Timezone                                                                        |
+| MACHINE_NAME                | No       | Pipewire | A friendly name for a device on Bluetooth |
 
 Custom Pipewire configuration can be injected via the /pipewire-config bind. Note this overrides any default configuration or values 
 set by environment variables.

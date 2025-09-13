@@ -88,7 +88,7 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
   pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
-  alsa-plugins mpd mpc ffmpeg icecast bluez \
+  alsa-plugins mpd mpc ffmpeg ffplay icecast bluez \
   curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
 
 adduser root lp

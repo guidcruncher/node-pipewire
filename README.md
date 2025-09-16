@@ -29,7 +29,7 @@ services:
       - ICECAST_BITRATE=48000
       - ICECAST_CHANNELS=2
       - ICECAST_COMPLEVEL=5
-      - ICECAST_ENABLE=true
+      - ENABLE_SERVICES=go-librespot,mpd,icecast,capture-audio
       - ICECAST_SAMPLERATE=48000
       - RTKIT_ENABLE=true
       - SPOTIFY_AUTHJSON=
@@ -81,8 +81,8 @@ The environment variables below are comfigurable.
 | ICECAST_BITRATE             | No       | 48000    | Icecast bitrate                                                                 |
 | ICECAST_CHANNELS            | No       | 2        | Icecast channels                                                                |
 | ICECAST_COMPLEVEL           | No       | 5        | Icecast compression level (1-10)                                                |
-| ICECAST_ENABLE              | No       | true     | Enable Icecast                                                                  |
 | ICECAST_SAMPLERATE          | No       | 48000    | Icecast sample rate                                                             |
+| ENABLE_SERVICES             | No       |          | Comma seperated list of services to autostart (go-librespot,mpd,icecast,capture-audio) |
 | MPD_SOCKET                  | Yes      |          | MPD Control socket path                                                         |
 | RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit                                                     |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |

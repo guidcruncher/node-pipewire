@@ -23,6 +23,11 @@ do
   envsubst < "$file" > /local/config/go-librespot/$(basename "$file")
 done
 
+for file in /local/.defaults/snapserver/*.conf
+do
+  envsubst < "$file" > /local/config/snapserver/$(basename "$file")
+done
+
 cp -R /pipewire-config/* /local/config/pipewire
 
 openrc default

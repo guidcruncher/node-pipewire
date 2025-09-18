@@ -2,6 +2,10 @@
 
 echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
 
+if [ -f "/app/init.sh" ]; then
+  /app/init.sh
+fi
+
 ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
 echo "$TZ" | tee /etc/timezone
 

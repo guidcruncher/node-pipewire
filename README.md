@@ -6,8 +6,8 @@ An Alpine Docker image running
 - Pipewire
 - Wireplumber
 - Pipewire Pulseaudio
-- MPD
-- Icecast2
+- FFMpeg suite
+- Snapcast
 - go-libresppt
 - NodeJS + Typescript
 
@@ -26,11 +26,7 @@ services:
     network_mode: host
     environment:
       - GOLIBRESPOT_CREDENTIAL_TYPE=zeroconf
-      - ICECAST_BITRATE=48000
-      - ICECAST_CHANNELS=2
-      - ICECAST_COMPLEVEL=5
-      - ENABLE_SERVICES=go-librespot,mpd,icecast,capture-audio
-      - ICECAST_SAMPLERATE=48000
+      - ENABLE_SERVICES=go-librespot,snapcast,capture-audio
       - RTKIT_ENABLE=true
       - SPOTIFY_AUTHJSON=
       - SPOTIFY_TOKEN=
@@ -78,12 +74,7 @@ The environment variables below are comfigurable.
 | ALSA_PLAYBACK_POSITION      | No       | FL,FR    | Channel to position mapping (Comma Seperated)                                   |
 | GOLIBRESPOT_API             | Yes      |          | The go-librespot API base url                                                   |
 | GOLIBRESPOT_CREDENTIAL_TYPE | No       | zeroconf | zeroconf or spotify_token                                                       |
-| ICECAST_BITRATE             | No       | 48000    | Icecast bitrate                                                                 |
-| ICECAST_CHANNELS            | No       | 2        | Icecast channels                                                                |
-| ICECAST_COMPLEVEL           | No       | 5        | Icecast compression level (1-10)                                                |
-| ICECAST_SAMPLERATE          | No       | 48000    | Icecast sample rate                                                             |
-| ENABLE_SERVICES             | No       |          | Comma seperated list of services to autostart (go-librespot,mpd,icecast,capture-audio) |
-| MPD_SOCKET                  | Yes      |          | MPD Control socket path                                                         |
+| ENABLE_SERVICES             | No       |          | Comma seperated list of services to autostart (go-librespot,snapcast,capture-audio) |
 | RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit                                                     |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |

@@ -68,7 +68,7 @@ ${XDG_CONFIG_HOME}/pm2 \
 ${PM2_BASE_HOME} ${PM2_CONTAINER_HOME}
 EOF
 
-COPY ./alsa-libs/ /
+COPY ./alsa-lib/ /
 COPY ./config/snapserver/snapserver.conf /etc/snapserver.conf
 COPY ./config/ ${XDG_CONFIG_HOME}/
 COPY ./config/ /local/.defaults/

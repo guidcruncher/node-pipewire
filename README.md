@@ -79,6 +79,8 @@ The environment variables below are comfigurable.
 | SNAPSERVER_SOURCE           | No       |          | Source where Snapserver listens for audio |
 | SNAPSERVER_SAMPLEFORMAT     | No       |          | Snapserver sample rate |
 | SNAPSERVER_CODEC            | No       | flac     | Codec to use (flac|ogg|opus|pcm)[:options] |
+| SNAPSERVER_CHUNK_MS         | No       | 26       | Chunk size in ms | 
+| SNAPSERVER_BUFFER           | No       | 1000     | Buffer size |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |

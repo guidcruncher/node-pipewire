@@ -78,6 +78,7 @@ The environment variables below are comfigurable.
 | RTKIT_ENABLE                | No       | true     | Set to true to enable RTKit                                                     |
 | SNAPSERVER_SOURCE           | No       |          | Source where Snapserver listens for audio |
 | SNAPSERVER_SAMPLEFORMAT     | No       |          | Snapserver sample rate |
+| SNAPSERVER_CODEC            | No       | flac     | Codec to use (flac|ogg|opus|pcm)[:options] |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |

@@ -12,6 +12,7 @@ services:
       - MEMCACHE=true
     ports:
       - 8000:8000
+      - 1780:1780
     container_name: pipewire
     hostname: pipewire
     restart: unless-stopped

@@ -8,24 +8,10 @@ module.exports = {
     args   : ""
   },
   {
-    name   : "mpd",
+    name   : "snapserver",
     cwd    : "/app",
-    script : "/usr/local/bin/mpd.sh",
-    pid_file: "/local/state/mpd.pid",
-    args   : ""
-  },
-  {
-    name   : "icecast",
-    cwd    : "/app",
-    script : "/usr/local/bin/icecast.sh",
-    pid_file: "/local/state/icecast.pid",
-    args   : ""
-  },
-  {
-    name   : "capture-audio",
-    cwd    : "/app",
-    script : "/usr/local/bin/capture-audio.sh",
-    pid_file: "/local/state/capture-audio.pid",
+    script : "/usr/local/bin/snapserver.sh",
+    pid_file: "/local/state/snapserver.pid",
     args   : ""
   },
   ]

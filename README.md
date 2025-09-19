@@ -75,7 +75,9 @@ The environment variables below are comfigurable.
 | GOLIBRESPOT_API             | Yes      |          | The go-librespot API base url                                                   |
 | GOLIBRESPOT_CREDENTIAL_TYPE | No       | zeroconf | zeroconf or spotify_token                                                       |
 | ENABLE_SERVICES             | No       |          | Comma seperated list of services to autostart (go-librespot,snapcast,capture-audio) |
-| RTKIT_ENABLE  v             | No       | true     | Set to true to enable RTKit                                                     |
+| RTKIT_ENABLE                | No       | true     | Set to true to enable RTKit                                                     |
+| SNAPSERVER_SOURCE           | No       |          | Source where Snapserver listens for audio |
+| SNAPSERVER_SAMPLEFORMAT     | No       |          | Snapserver sample rate |
 | SPOTIFY_AUTHJSON            | No       |          | Filename of JSON file containing access token and username (spotify_token type) |
 | SPOTIFY_TOKEN               | No       |          | Spotify Access token (spotify_token type)                                       |
 | SPOTIFY_USERNAME            | No       |          | Spotify username (spotify_token type)                                           |

@@ -23,7 +23,8 @@ ENV SPOTIFY_DEVICE_NAME=Pipewire
 ENV SPOTIFY_AUTHJSON=
 ENV RTKIT_ENABLE=true
 
-ENV SNAPSERVER_SOURCE="alsa:///?name=Pipewire&device=pipewire"
+ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=default"
+#SNAPSERVER_SOURCE="alsa:///?name=Pipewire&device=pipewire"
 ENV SNAPSERVER_SAMPLEFORMAT="44100:16:2"
 ENV SNAPSERVER_CODEC=flac
 ENV SNAPSERVER_CHUNK_MS=26

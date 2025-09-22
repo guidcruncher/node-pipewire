@@ -54,6 +54,10 @@ fi
 
 sleep 2
 
+pactl load-module module-pipe-sink file=/tmp/snapfifo \
+    sink_name=Snapcast sink_properties=device.description=Snapcast \
+    format=s16le rate=44100
+
 if [ -d "/usr/local/bin/node-pipewire.d" ]; then
   for script in /usr/local/bin/node-pipewire.d/*.sh ; do
     if [ -r "$script" ] ; then

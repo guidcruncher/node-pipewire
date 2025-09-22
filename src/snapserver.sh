@@ -18,6 +18,4 @@ else
   done
 
   /usr/bin/snapserver -d -c /local/config/snapserver/snapserver.conf
-  sleep 2
-  /usr/bin/snapclient --player alsa -s soundcard  --host 127.0.0.1
 fi

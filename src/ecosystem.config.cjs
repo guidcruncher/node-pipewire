@@ -14,5 +14,12 @@ module.exports = {
     pid_file: "/local/state/snapserver.pid",
     args   : ""
   },
+  {
+    name   : "snapclient",
+    cwd    : "/app",
+    script : "/usr/local/bin/snapclient.sh",
+    pid_file: "/local/state/snapclient.pid",
+    args   : ""
+  },
   ]
 }

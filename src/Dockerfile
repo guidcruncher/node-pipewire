@@ -23,8 +23,9 @@ ENV SPOTIFY_DEVICE_NAME=Pipewire
 ENV SPOTIFY_AUTHJSON=
 ENV RTKIT_ENABLE=true
 
-ENV SNAPSERVER_SOURCE="alsa:///?name=Pipewire&device=pipewire"
-ENV SNAPSERVER_SAMPLEFORMAT="48000:16:2"
+ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=default"
+#SNAPSERVER_SOURCE="alsa:///?name=Pipewire&device=pipewire"
+ENV SNAPSERVER_SAMPLEFORMAT="44100:16:2"
 ENV SNAPSERVER_CODEC=flac
 ENV SNAPSERVER_CHUNK_MS=26
 ENV SNAPSERVER_BUFFER=1000
@@ -33,10 +34,10 @@ ENV PM2_BASE_HOME=${XDG_STATE_HOME}/pm2/base
 ENV PM2_CONTAINER_HOME=${XDG_STATE_HOME}/pm2/container
 ENV PM2_HOME=${PM2_CONTAINER_HOME}
 
-ENV ENABLE_SERVICES=go-librespot,snapserver
+ENV ENABLE_SERVICES=go-librespot,snapserver,snapclient
 
 ENV ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
-ENV ALSA_PLAYBACK_RATE=48000
+ENV ALSA_PLAYBACK_RATE=44100
 ENV ALSA_PLAYBACK_FORMAT="S16LE"
 ENV ALSA_PLAYBACK_CHANNELS=2
 ENV ALSA_PLAYBACK_POSITION="FL,FR"
@@ -91,7 +92,7 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
   pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
-  alsa-plugins snapcast ffmpeg ffplay bluez unzip \
+  alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
   curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
 
 adduser root lp

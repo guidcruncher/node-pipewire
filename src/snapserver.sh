@@ -6,6 +6,10 @@ if [ "$1" == "shutdown" ]; then
   if [ -n "$pid" ]; then
     kill $pid
   fi
+  pid=$(pgrep -f snapclient)
+  if [ -n "$pid" ]; then
+    kill $pid
+  fi
 else
   for file in /local/.defaults/snapserver/*.conf
   do

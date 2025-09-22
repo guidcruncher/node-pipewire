@@ -54,6 +54,12 @@ fi
 
 sleep 2
 
+pactl load-module module-pipe-sink file=/tmp/snapfifo \
+    sink_name=snapcast-sink sink_properties=device.description=Snapcast \
+    format=$ALSA_PLAYBACK_FORMAT rate=$ALSA_PLAYBACK_RATE \
+    channels=$ALSA_PLAYBACK_CHANNELS
+pactl set-default-sink snapcast-sink
+
 if [ -d "/usr/local/bin/node-pipewire.d" ]; then
   for script in /usr/local/bin/node-pipewire.d/*.sh ; do
     if [ -r "$script" ] ; then

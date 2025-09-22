@@ -17,5 +17,5 @@ else
     envsubst < "$file" > /local/config/snapserver/$(basename "$file")
   done
 
-  /usr/bin/snapserver -d -c /local/config/snapserver/snapserver.conf
+  /usr/bin/snapserver -c /local/config/snapserver/snapserver.conf
 fi

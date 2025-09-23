@@ -4,10 +4,6 @@ export SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
 
 echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
 
-if [ -f "/app/init.sh" ]; then
-  /app/init.sh
-fi
-
 ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
 echo "$TZ" | tee /etc/timezone
 

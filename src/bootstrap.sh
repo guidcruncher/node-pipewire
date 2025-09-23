@@ -1,4 +1,6 @@
 #!/bin/sh
+export SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
+export SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
 
 echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
 
@@ -57,7 +59,7 @@ sleep 2
 pactl load-module module-pipe-sink file=/tmp/snapfifo \
     sink_name=snapcast-sink sink_properties=device.description=Snapcast \
     format=$ALSA_PLAYBACK_FORMAT rate=$ALSA_PLAYBACK_RATE \
-    channels=$ALSA_PLAYBACK_CHANNELS
+    channels=$ALSA_PLAYBACK_CHANNELS 
 pactl set-default-sink snapcast-sink
 
 if [ -d "/usr/local/bin/node-pipewire.d" ]; then

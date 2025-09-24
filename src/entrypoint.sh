@@ -4,7 +4,7 @@ export SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_
 export SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
 
 if [ -f "/app/init.sh" ]; then
-  . /app/init.sh
+  source /app/init.sh
 fi
 
 su-exec  root /usr/local/bin/bootstrap.sh

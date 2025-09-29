@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Exit if the service is already running through user services
 rc-service --user pipewire status 1>/dev/null 2>&1 && exit 0

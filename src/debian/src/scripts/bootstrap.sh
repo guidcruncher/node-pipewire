@@ -1,5 +1,4 @@
-
-#!/bin/sh
+#!/bin/bash
 
 mkdir -p /var/run/dbus /run/dbus
 export DBUS_SYSTEM_BUS_ADDRESS=$(dbus-daemon --system --print-address)
@@ -13,6 +12,7 @@ else
  echo "$DBUS_SESSION_BUS_ADDRESS" > /local/.dbus-"$USER"-address
 fi
 
+. /usr/local/bin/downloaddeps.sh
 
 export SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
 export SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"

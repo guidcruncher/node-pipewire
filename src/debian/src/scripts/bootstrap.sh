@@ -4,6 +4,7 @@
 mkdir -p /var/run/dbus /run/dbus
 export DBUS_SYSTEM_BUS_ADDRESS=$(dbus-daemon --system --print-address)
 echo "$DBUS_SYSTEM_BUS_ADDRESS" > /local/.dbus-address
+export USER=$(whoami)
 
 if [ -f "/local/.dbus-$USER-address" ]; then
   export DBUS_SESSION_BUS_ADDRESS=$(cat /local/.dbus-"$USER"-address)

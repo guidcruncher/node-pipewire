@@ -1,5 +1,6 @@
 #!/bin/bash
 export DBUS_SYSTEM_BUS_ADDRESS=$(cat /local/.dbus-address)
+export USER=$(whoami)
 
 if [ -f "/local/.dbus-$USER-address" ]; then
   export DBUS_SESSION_BUS_ADDRESS=$(cat /local/.dbus-"$USER"-address)

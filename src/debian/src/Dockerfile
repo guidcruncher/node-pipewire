@@ -68,7 +68,7 @@ apt install -y --no-install-recommends \
   curl nano ffmpeg gzip unzip jq xz-utils pipewire-audio \
   gettext-base libasound2 avahi-daemon avahi-utils bluez \
   alsa-tools alsa-utils nodejs npm procps libasound2-plugin-equal \
-  pipewire-utils
+  pulseaudio-utils
 
 apt install -y dbus
 

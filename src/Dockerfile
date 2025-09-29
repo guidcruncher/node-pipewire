@@ -130,8 +130,6 @@ COPY --chmod=755 ./snapserver.sh /usr/local/bin/snapserver.sh
 COPY --chmod=755 ./alsa-capabilities.sh /usr/local/bin/alsa-capabilities.sh
 COPY --chmod=755 ./pm2.sh /usr/local/bin/pm2.sh
 COPY --chmod=755 ./pm2base.sh /usr/local/bin/pm2base.sh
-COPY --chmod=755 ./easyeffects.sh /usr/local/bin/easyeffects.sh
-COPY --chmod=755 ./vnc.sh /usr/local/bin/vnc.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]
 

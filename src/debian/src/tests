@@ -1,0 +1,7 @@
+
+
+./mpc.sh clear
+
+./mpc.sh add "https://lsn.lv/bbcradio.m3u8?station=bbc_radio_two&bitrate=320000"
+
+./mpc.sh play

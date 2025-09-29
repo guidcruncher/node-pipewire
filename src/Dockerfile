@@ -7,6 +7,7 @@ ENV PULSE_RUNTIME_PATH=/tmp/pulse/
 ENV PIPEWIRE_RUNTIME_DIR=/tmp/
 ENV TZ=UTC
 
+ENV DISPLAY=:43
 ENV XDG_CONFIG_HOME=/local/config
 ENV XDG_CACHE_HOME=/local/cache
 ENV XDG_DATA_HOME=/local/share
@@ -76,7 +77,7 @@ COPY ./config/snapserver/snapserver.conf /etc/snapserver.conf
 COPY ./config/ ${XDG_CONFIG_HOME}/
 COPY ./config/ /local/.defaults/
 COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
-COPY ./alsa-lib/ /usr/lib/als
+COPY ./alsa-lib/ /usr/lib/alsa
 COPY ./ladspa/ /usr/lib/ladspa/
 RUN mkdir -p /local/config/pm2/
 COPY ./ecosystem.config.cjs /local/config/pm2
@@ -95,7 +96,8 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
-  curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
+  curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst \
+  easyeffects xvfb x11vnc fluxbox
 
 adduser root lp
 adduser appuser lp
@@ -129,7 +131,8 @@ COPY --chmod=755 ./snapserver.sh /usr/local/bin/snapserver.sh
 COPY --chmod=755 ./alsa-capabilities.sh /usr/local/bin/alsa-capabilities.sh
 COPY --chmod=755 ./pm2.sh /usr/local/bin/pm2.sh
 COPY --chmod=755 ./pm2base.sh /usr/local/bin/pm2base.sh
-
+COPY --chmod=755 ./easyeffects.sh /usr/local/bin/easyeffects.sh
+COPY --chmod=755 ./vnc.sh /usr/local/bin/vnc.sh
 
 CMD ["/usr/local/bin/entrypoint.sh"]
 

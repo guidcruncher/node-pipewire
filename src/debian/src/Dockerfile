@@ -35,7 +35,7 @@ apt install -y --no-install-recommends \
   curl nano ffmpeg gzip unzip jq xz-utils pipewire-audio \
   gettext-base libasound2 avahi-daemon avahi-utils bluez \
   alsa-tools alsa-utils procps libasound2-plugin-equal \
-  pulseaudio-utils ca-certificates nodejs npm
+  pulseaudio-utils ca-certificates nodejs npm libpipewire-0.3-dev
 
 apt install -y dbus
 
@@ -81,7 +81,8 @@ ENV SNAPSERVER_CHUNK_MS=26
 ENV SNAPSERVER_BUFFER=1000
 ENV SNAPCLIENT_HOSTID=Pipewire-Local
 ENV SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
-ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT"
+ENV SNAPSERVER_SOURCE="pipewire://?name=Snapcast&auto_connect=true"
+# "pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT"
 ENV SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
 ENV MACHINE_NAME="Pipewire"
 

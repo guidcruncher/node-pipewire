@@ -43,11 +43,3 @@ done
 
 . /usr/local/bin/pipewire-launcher.sh
 
-pactl load-module module-pipe-sink file=/tmp/snapfifo \
-    sink_name=snapcast-sink sink_properties=device.description=Snapcast \
-    format="$ALSA_PLAYBACK_FORMAT" rate=$ALSA_PLAYBACK_RATE \
-    channels=$ALSA_PLAYBACK_CHANNELS \
-    position="$ALSA_PLAYBACK_POSITION"
-
-pactl set-default-sink snapcast-sink
-

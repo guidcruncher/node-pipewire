@@ -25,8 +25,6 @@ RUN apt-get update && \
     libcamera-ipa \
     libpipewire-0.3-dev \
     nano \
-    nodejs \
-    npm \
     pipewire-audio \
     pipewire-libcamera \
     procps \
@@ -37,6 +35,18 @@ RUN apt-get update && \
     xz-utils
 
 RUN <<EOF
+adduser --system \
+   --shell /bin/bash \
+   --gecos ‘User for managing of git version control’ \
+   --group \
+   --disabled-password \
+   appuser
+passwd -d appuser
+
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt install -y nodejs
+node -v
+
 mkdir ./sw
 cd ./sw
 

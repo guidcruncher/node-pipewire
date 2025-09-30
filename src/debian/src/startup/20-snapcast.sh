@@ -23,4 +23,4 @@ sleep 3
     --hostID "$SNAPCLIENT_HOSTID" \
     --sampleformat "$SNAPCLIENT_SAMPLEFORMAT" \
     --logsink stdout \
-    127.0.0.1
+    tcp://127.0.0.1

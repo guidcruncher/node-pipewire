@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for f in $HOME/startup/*; do
+for f in $APP_STARTUP/*; do
     source "$f" || exit 1
     sleep 2s
 done

@@ -87,6 +87,7 @@ EOF
 FROM base AS runtime
 
 ENV APP_BASE="/app"
+ENV APP_STARTUP="/app/startup"
 ENV CONFIG_BASE="/config"
 
 ENV DISABLE_RTKIT=y
@@ -117,18 +118,17 @@ ENV PM2_BASE_HOME=${XDG_STATE_HOME}/pm2/base
 ENV PM2_CONTAINER_HOME=${XDG_STATE_HOME}/pm2/container
 ENV PM2_HOME=${PM2_CONTAINER_HOME}
 
-WORKDIR /root
-
-RUN  mkdir -p /etc/bashrc.d /config /app
+RUN mkdir -p /etc/bashrc.d /config $APP_BASE $APP_STARTUP
+WORKDIR ${APP_BASE}
 
 COPY ./config/ ${CONFIG_BASE}/
 COPY ./config/asound.conf /etc/asound.conf
 
-COPY ./startup/ /root/startup/
+COPY ./startup/ ${APP_STARTUP}
 COPY ./scripts/*.sh /usr/local/bin/
 
 RUN chmod 755 /usr/local/bin/*.sh && \
-    chmod 755 /root/startup/*.sh && \
+    chmod 755 $APP_STARTUP/*.sh && \
     mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh && \
     echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
 

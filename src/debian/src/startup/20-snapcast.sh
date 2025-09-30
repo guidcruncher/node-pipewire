@@ -1,6 +1,6 @@
 #!/bin/bash
 
-envsubst < /root/config/snapserver/snapserver.conf > /etc/snapserver.conf
+envsubst < "$CONFIG_BASE"/snapserver/snapserver.conf > /etc/snapserver.conf
 
 trap 'echo ' ERR SIGINT SIGTERM
 pid=$(pgrep -f snapserver)

@@ -2,6 +2,7 @@ FROM debian:bookworm AS base
 ARG ARCH
 ARG SNAPCAST_VERSION=0.33.0
 ARG LIBRESPOT_VERSION=0.4.0
+ARG NODE_VERSION=22
  
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -43,7 +44,7 @@ adduser --system \
    appuser
 passwd -d appuser
 
-curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 apt install -y nodejs
 node -v
 
@@ -80,9 +81,14 @@ rm -rf ./sw
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
 npm install -g typescript ts-node tslib @types/node pm2
+mkdir -p /app /config
 EOF
 
 FROM base AS runtime
+
+ENV APP_BASE="/app"
+ENV CONFIG_BASE="/config"
+
 ENV DISABLE_RTKIT=y
 ENV XDG_RUNTIME_DIR=/tmp
 ENV PIPEWIRE_RUNTIME_DIR=/tmp
@@ -98,22 +104,25 @@ ENV ALSA_PLAYBACK_POSITION="FL,FR"
 ENV ALSA_EQUAL_MIXER="soundcard"
 ENV ALSA_BITS_PER_SAMPLE=16
 
+ENV SNAPSERVER_DATADIR=/local/config/snapserver/
 ENV SNAPSERVER_CODEC=flac
 ENV SNAPSERVER_CHUNK_MS=26
 ENV SNAPSERVER_BUFFER=1000
 ENV SNAPCLIENT_HOSTID=Pipewire-Local
 ENV SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
-#ENV SNAPSERVER_SOURCE="pipewire://?name=Snapcast&auto_connect=true"
 ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT"
 ENV SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
+
+ENV PM2_BASE_HOME=${XDG_STATE_HOME}/pm2/base
+ENV PM2_CONTAINER_HOME=${XDG_STATE_HOME}/pm2/container
+ENV PM2_HOME=${PM2_CONTAINER_HOME}
 
 WORKDIR /root
 
 RUN  mkdir -p /local /etc/bashrc.d /config ./config
 
-COPY ./config/ /root/config/
+COPY ./config/ ${CONFIG_BASE}/
 COPY ./config/asound.conf /etc/asound.conf
-COPY ./config/snapserver/snapserver.conf /etc/snapserver.conf
 
 COPY ./startup/ /root/startup/
 COPY ./scripts/*.sh /usr/local/bin/
@@ -122,6 +131,8 @@ RUN chmod 755 /usr/local/bin/*.sh && \
     chmod 755 /root/startup/*.sh && \
     mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh && \
     echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
+
+WORKDIR ${APP_BASE}
 
 CMD ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 

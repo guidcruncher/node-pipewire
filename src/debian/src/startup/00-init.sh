@@ -1,11 +1,5 @@
 #!/bin/bash
 
-export DISABLE_RTKIT=y
-export XDG_RUNTIME_DIR=/tmp
-export PIPEWIRE_RUNTIME_DIR=/tmp
-export PULSE_RUNTIME_DIR=/tmp
-export DISPLAY=:0.0
-
 chmod 700 $XDG_RUNTIME_DIR
 mkdir -p /run/dbus
 
@@ -23,10 +17,9 @@ else
  echo "$DBUS_SESSION_BUS_ADDRESS" > /local/.dbus-"$USER"-address
 fi
 
+if [ -f "/tmp/.X0-lock" ]; then
+    rm /tmp/.X0-lock
+fi
+
 Xvfb -screen $DISPLAY 800x600x24 &
 
-mkdir -p /dev/snd
-
-pipewire &
-wireplumber &
-pipewire-pulse &

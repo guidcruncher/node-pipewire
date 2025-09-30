@@ -7,7 +7,7 @@ done
 
 if [ -n "$1" ]; then
   $@
-elsed
+else
   tail -f /dev/null
 fi
  

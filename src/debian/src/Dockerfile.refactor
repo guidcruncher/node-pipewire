@@ -1,0 +1,154 @@
+# ----------------------------------------------------------------------
+# Stage 1: Build & Installation Stage (Kept Minimal)
+# ----------------------------------------------------------------------
+FROM debian:bookworm-slim AS base
+ARG ARCH
+ARG SNAPCAST_VERSION=0.33.0
+ARG LIBRESPOT_VERSION=0.4.0
+ARG NODE_VERSION=22
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 1. Install system packages and dependencies in one RUN command.
+#    - Use --no-install-recommends for smaller installs.
+#    - Use -y to suppress prompts.
+#    - Combine apt-get clean and rm -rf /var/lib/apt/lists/* for cleanup in the same layer.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        alsa-tools \
+        alsa-utils \
+        avahi-daemon \
+        avahi-utils \
+        bluez \
+        ca-certificates \
+        curl \
+        dbus-x11 \
+        findutils \
+        ffmpeg \
+        gettext-base \
+        gzip \
+        jq \
+        libasound2 \
+        libasound2-plugin-equal \
+        libcamera-ipa \
+        libpipewire-0.3-dev \
+        pipewire-audio \
+        pipewire-libcamera \
+        procps \
+        pulseaudio-utils \
+        rtkit \
+        unzip \
+        xvfb \
+        xz-utils \
+        # Dependencies for Node.js installation via script
+        gnupg \
+        # Add wget for downloading .deb if curl is insufficient later, though curl is fine here
+    && curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - \
+    && apt-get install -y nodejs \
+    && node -v \
+    # Clean up APT files immediately after installation
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Add non-root user for security
+#    - Use the preferred --disabled-login for system users.
+#    - passwd -d is often redundant for system users but kept if needed for non-interactive login
+RUN adduser --system \
+    --shell /bin/bash \
+    --gecos 'Application User' \
+    --group \
+    --disabled-login \
+    appuser \
+    && passwd -d appuser
+
+# 3. Install external dependencies (Snapcast/Librespot) in a single RUN block.
+#    - Use /tmp for downloads instead of creating and cleaning a separate directory (`sw`).
+#    - Install all downloaded DEB files in one `apt install` command.
+RUN TARGETARCH="$(dpkg --print-architecture)" ; \
+    if [ "$TARGETARCH" = "aarch64" ]; then TARGETARCH="arm64"; fi ; \
+    # Download files
+    curl -L "https://github.com/badaix/snapcast/releases/download/v$SNAPCAST_VERSION/snapclient_$SNAPCAST_VERSION-1_""$TARGETARCH""_bookworm.deb" -o /tmp/snapclient.deb ; \
+    curl -L "https://github.com/badaix/snapcast/releases/download/v""$SNAPCAST_VERSION""/snapserver_""$SNAPCAST_VERSION""-1_""$TARGETARCH""_bookworm_with-pipewire.deb" -o /tmp/snapserver.deb ; \
+    curl -L "https://github.com/devgianlu/go-librespot/releases/download/v""$LIBRESPOT_VERSION""/go-librespot_linux_$TARGETARCH.tar.gz" -o /tmp/librespot.tar.gz ; \
+    \
+    # Install go-librespot
+    tar xzf /tmp/librespot.tar.gz -C /usr/local/bin/ go-librespot ; \
+    chmod +x /usr/local/bin/go-librespot ; \
+    \
+    # Install Snapcast DEBs
+    apt-get install -y /tmp/snapclient.deb /tmp/snapserver.deb ; \
+    apt-get -f install -y ; \
+    \
+    # Move config (if necessary, though better to handle via COPY later)
+    mv /etc/snapserver.conf /etc/snapserver.bak ; \
+    \
+    # Install npm dependencies (ts-node, pm2, etc.)
+    npm install -g typescript ts-node tslib @types/node pm2 --unsafe-perm ; \
+    \
+    # Clean up downloaded files
+    rm -rf /tmp/*.deb /tmp/*.tar.gz ; \
+    apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Remove unnecessary build tools like nano (if not needed at runtime)
+# RUN apt-get remove -y nano gnupg && apt-get autoremove -y
+
+# ----------------------------------------------------------------------
+# Stage 2: Final Runtime Image (Minimal)
+# ----------------------------------------------------------------------
+# Reuse the 'base' image since it's already well-cleaned and contains all
+# necessary binaries. No need for a separate final stage unless you can
+# switch to a smaller base like 'alpine' and only copy runtime deps.
+FROM base AS runtime
+
+# Set up directories and environment variables
+RUN mkdir -p /app /config /etc/bashrc.d /tmp \
+    && chown -R appuser:appuser /app /config
+
+# Define ALL environment variables
+ENV APP_BASE="/app" \
+    CONFIG_BASE="/config" \
+    DISABLE_RTKIT=y \
+    XDG_RUNTIME_DIR=/tmp \
+    PIPEWIRE_RUNTIME_DIR=/tmp \
+    PULSE_RUNTIME_DIR=/tmp \
+    DBUS_ADDRESS_DIR=/.dbus \
+    DISPLAY=:0.0 \
+    ALSA_PLAYBACK_DEVICE="hw:AUDIO,0" \
+    ALSA_PLAYBACK_RATE=48000 \
+    ALSA_PLAYBACK_FORMAT="S16LE" \
+    ALSA_PLAYBACK_CHANNELS=2 \
+    ALSA_PLAYBACK_POSITION="FL,FR" \
+    ALSA_EQUAL_MIXER="soundcard" \
+    ALSA_BITS_PER_SAMPLE=16 \
+    SNAPSERVER_DATADIR=/config/snapserver/ \
+    SNAPSERVER_CODEC=flac \
+    SNAPSERVER_CHUNK_MS=26 \
+    SNAPSERVER_BUFFER=1000 \
+    SNAPCLIENT_HOSTID=Pipewire-Local \
+    SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS" \
+    SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT" \
+    SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*" \
+    PM2_BASE_HOME="/tmp/pm2/base" \
+    PM2_CONTAINER_HOME="/tmp/pm2/container" \
+    PM2_HOME="/tmp/pm2/container"
+
+# Set the application user for runtime security
+# USER appuser
+
+# Copy application files (keep this section near the end for better cache utilization)
+WORKDIR /home/appuser # Use home directory as starting point
+COPY --chown=appuser:appuser ./config/ ${CONFIG_BASE}/
+COPY ./config/asound.conf /etc/asound.conf
+COPY ./startup/ /home/appuser/startup/
+COPY ./scripts/*.sh /usr/local/bin/
+
+# Final permissions and setup
+WORKDIR ${APP_BASE}
+RUN chmod 755 /usr/local/bin/*.sh \
+    && chmod 755 /home/appuser/startup/*.sh \
+    && mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh \
+    && echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
+
+# Set the final working directory and entrypoint
+WORKDIR ${APP_BASE}
+CMD ["/bin/bash", "/usr/local/bin/entrypoint.sh"]

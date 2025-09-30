@@ -69,6 +69,7 @@ rm -rf ./sw
 
 apt-get clean && \
 rm -rf /var/lib/apt/lists/*
+npm install -g typescript ts-node tslib @types/node pm2
 EOF
 
 FROM base AS runtime

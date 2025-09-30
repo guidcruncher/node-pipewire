@@ -104,7 +104,7 @@ ENV ALSA_PLAYBACK_POSITION="FL,FR"
 ENV ALSA_EQUAL_MIXER="soundcard"
 ENV ALSA_BITS_PER_SAMPLE=16
 
-ENV SNAPSERVER_DATADIR=/local/config/snapserver/
+ENV SNAPSERVER_DATADIR=/config/snapserver/
 ENV SNAPSERVER_CODEC=flac
 ENV SNAPSERVER_CHUNK_MS=26
 ENV SNAPSERVER_BUFFER=1000
@@ -119,7 +119,7 @@ ENV PM2_HOME=${PM2_CONTAINER_HOME}
 
 WORKDIR /root
 
-RUN  mkdir -p /local /etc/bashrc.d /config ./config
+RUN  mkdir -p /etc/bashrc.d /config /app
 
 COPY ./config/ ${CONFIG_BASE}/
 COPY ./config/asound.conf /etc/asound.conf

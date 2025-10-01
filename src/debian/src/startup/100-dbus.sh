@@ -24,3 +24,5 @@ echo "$DBUS_SYSTEM_BUS_ADDRESS"  > "$DBUS_ADDRESS_DIR"/system-address
 
  export DBUS_SESSION_BUS_ADDRESS=$(dbus-daemon --session --print-address --fork)
  echo "$DBUS_SESSION_BUS_ADDRESS" > "$DBUS_ADDRESS_DIR"/session-"$USER"-address
+
+rtkitctl --start

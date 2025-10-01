@@ -18,7 +18,7 @@ pid=$(pgrep -f snapclient)
 
 sleep 3
 
-/usr/bin/snapclient -d --player alsa -s soundcard --host tcp://127.0.0.1 \
+/usr/bin/snapclient -d --player alsa -s soundcard --host 127.0.0.1 \
     --hostID "$SNAPCLIENT_HOSTID" \
     --sampleformat "$SNAPCLIENT_SAMPLEFORMAT" \
     --logsink stdout 

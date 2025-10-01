@@ -119,7 +119,7 @@ ENV SPOTIFY_TOKEN=""
 ENV SPOTIFY_DEVICE_NAME="go-librespot"
 ENV MACHINE_NAME=Pipewire-Docker
 
-RUN mkdir -p /etc/bashrc.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STATE
+RUN mkdir -p /etc/profile.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STATE
 
 WORKDIR ${APP_BASE}
 
@@ -131,8 +131,7 @@ COPY ./scripts/*.sh /usr/local/bin/
 
 RUN chmod 755 /usr/local/bin/*.sh && \
     chmod 755 $APP_STARTUP/*.sh && \
-    mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh && \
-    echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
+    mv /usr/local/bin/bashrc.sh /etc/profile.d/bashrc.sh
 
 WORKDIR ${APP_BASE}
 

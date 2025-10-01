@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 export DBUS_SYSTEM_BUS_ADDRESS=$(cat "$DBUS_ADDRESS_DIR"/system-address)
 export USER=$(whoami)
 

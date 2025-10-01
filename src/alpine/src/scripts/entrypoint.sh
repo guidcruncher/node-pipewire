@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 for f in $APP_STARTUP/*; do
     source "$f" || exit 1

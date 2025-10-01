@@ -15,14 +15,22 @@ mkdir -p "$DBUS_ADDRESS_DIR"
     rm /run/dbus/pid
   fi
 
-export DBUS_SYSTEM_BUS_ADDRESS=$(dbus-daemon --system --fork --print-address)
+openrc default
+rc-update add dbus
+rc-service dbus start
+
 echo "$DBUS_SYSTEM_BUS_ADDRESS"  > "$DBUS_ADDRESS_DIR"/system-address 
 
   if [ -f "$DBUS_ADDRESS_DIR"/session-"$USER"-address ]; then
     rm  "$DBUS_ADDRESS_DIR"/session-"$USER"-address
   fi
 
- export DBUS_SESSION_BUS_ADDRESS=$(dbus-daemon --session --print-address --fork)
+ export $(dbus-launch)
  echo "$DBUS_SESSION_BUS_ADDRESS" > "$DBUS_ADDRESS_DIR"/session-"$USER"-address
 
-rtkitctl --start
+if [ "$RTKIT_ENABLE" == "true" ];
+  rtkitctl --start
+else
+  export DISABLE_RTKIT=y
+fi
+

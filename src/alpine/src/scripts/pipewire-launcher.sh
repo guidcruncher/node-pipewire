@@ -1,4 +1,4 @@
-  #!/bin/bash
+  #!/bin/sh
 
 # We need to kill any existing pipewire instance to restore sound
 pkill -u "${USER}" -fx /usr/bin/pipewire-pulse 1>/dev/null 2>&1

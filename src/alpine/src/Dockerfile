@@ -42,15 +42,7 @@ ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
 echo "$TZ" | tee /etc/timezone
 EOF
 
-
 RUN <<EOF
-useradd --system --shell /bin/bash -p none appuser
-passwd -d appuser
-
-curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
-apt install -y nodejs
-node -v
-
 mkdir ./sw
 cd ./sw
 
@@ -64,25 +56,15 @@ if [ "$TARGETARCH" = "aarch64" ]; then
   TARGETARCH="arm64"
 fi
 
-curl -L "https://github.com/badaix/snapcast/releases/download/v$SNAPCAST_VERSION/snapclient_$SNAPCAST_VERSION-1_""$TARGETARCH""_bookworm.deb" -o ./snapclient.deb
-curl -L "https://github.com/badaix/snapcast/releases/download/v""$SNAPCAST_VERSION""/snapserver_""$SNAPCAST_VERSION""-1_""$TARGETARCH""_bookworm_with-pipewire.deb" -o ./snapserver.deb
 curl -L "https://github.com/devgianlu/go-librespot/releases/download/v""$LIBRESPOT_VERSION""/go-librespot_linux_$TARGETARCH.tar.gz" -o ./librespot.tar.gz
 
 tar xvf ./librespot.tar.gz go-librespot
 chmod +x ./go-librespot
 mv ./go-librespot /usr/local/bin/
 
-mv /etc/snapserver.conf /etc/snapserver.bak
-
-apt install -y ./snapclient.deb
-apt install -y ./snapserver.deb
-apt -f install -y
-
 cd ..
 rm -rf ./sw
 
-apt-get clean && \
-rm -rf /var/lib/apt/lists/*
 npm install -g typescript ts-node tslib @types/node pm2
 mkdir -p /app /config
 EOF
@@ -93,6 +75,7 @@ ENV APP_BASE="/app"
 ENV APP_STARTUP="/app/startup"
 ENV CONFIG_BASE="/config"
 
+ENV RTKIT_ENABLE=true
 ENV XDG_RUNTIME_DIR=/tmp
 ENV PIPEWIRE_RUNTIME_DIR=/tmp
 ENV PULSE_RUNTIME_DIR=/tmp
@@ -139,8 +122,7 @@ COPY ./scripts/*.sh /usr/local/bin/
 
 RUN chmod 755 /usr/local/bin/*.sh && \
     chmod 755 $APP_STARTUP/*.sh && \
-    mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh && \
-    echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
+    mv /usr/local/bin/bashrc.sh /etc/profile.d/bashrc.sh
 
 WORKDIR ${APP_BASE}
 

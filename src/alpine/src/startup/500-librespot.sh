@@ -20,7 +20,7 @@ if [ -f "$GOLIBRESPOT_STATE/lockfile" ]; then
 fi
 
 if [ "$GOLIBRESPOT_AUTHMODE" == "spotify_token" ]; then
-  if [ -n "$SPOTIFY_USERNAME" && -n "$SPOTIFY_TOKEN" ]; then
+  if [ -n "$SPOTIFY_USERNAME" ] && [ -n "$SPOTIFY_TOKEN" ]; then
     /usr/local/bin/go-librespot --config_dir "$GOLIBRESPOT_STATE" &
   else
    echo "No auth token available, cannot start Go-Librespot in this mode. To Autostart Go-Librespot use Zeroconf"

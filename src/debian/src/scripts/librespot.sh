@@ -2,15 +2,15 @@
 
 filename="config-zeroconf.yml"
 
-if [ "$GOLIBRESPOT_AUTHMODE" == "token" ]; then
+if [ "$GOLIBRESPOT_AUTHMODE" == "spotify_token" ]; then
   filename="config-spotify_token.yml"
 
-  if [ -n "$1" && -n "$2" ]; then
+  if [ -n "$1" ] && [ -n "$2" ]; then
     export SPOTIFY_USERNAME="$1"
     export SPOTIFY_TOKEN="$2"
     echo "Using passed access details"
   else
-    if [ -n "$SPOTIFY_USERNAME" && -n "$SPOTIFY_TOKEN" ]; then
+    if [ -n "$SPOTIFY_USERNAME" ] && [ -n "$SPOTIFY_TOKEN" ]; then
       echo "Got Access details from environment,"
     else
       echo "Access token not specified, aborting. Format : librespot.sh [username] [accesstoken]"

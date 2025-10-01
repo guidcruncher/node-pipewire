@@ -13,7 +13,7 @@ mkdir -p "$DBUS_ADDRESS_DIR"
 
    if [ -f "/run/dbus/pid" ]; then
     rm /run/dbus/pid
-  fi
+   fi
 
 openrc default
 rc-update add dbus
@@ -28,7 +28,7 @@ echo "$DBUS_SYSTEM_BUS_ADDRESS"  > "$DBUS_ADDRESS_DIR"/system-address
  export $(dbus-launch)
  echo "$DBUS_SESSION_BUS_ADDRESS" > "$DBUS_ADDRESS_DIR"/session-"$USER"-address
 
-if [ "$RTKIT_ENABLE" == "true" ];
+if [ "$RTKIT_ENABLE" == "true" ]; then
   rtkitctl --start
 else
   export DISABLE_RTKIT=y

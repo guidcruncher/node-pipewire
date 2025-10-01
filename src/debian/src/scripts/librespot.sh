@@ -8,9 +8,14 @@ if [ "$GOLIBRESPOT_AUTHMODE" == "token" ]; then
   if [ -n "$1" && -n "$2" ]; then
     export SPOTIFY_USERNAME="$1"
     export SPOTIFY_TOKEN="$2"
+    echo "Using passed access details"
   else
-    echo "Access token not specified, aborting. Format : librespot.sh [username] [accesstoken]"
-    exit 1
+    if [ -n "$SPOTIFY_USERNAME" && -n "$SPOTIFY_TOKEN" ]; then
+      echo "Got Access details from environment,"
+    else
+      echo "Access token not specified, aborting. Format : librespot.sh [username] [accesstoken]"
+      exit 1
+    fi
   fi
 fi
 

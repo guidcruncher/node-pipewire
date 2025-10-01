@@ -2,11 +2,11 @@
 
 filename="config-zeroconf.yml"
 
-if [ "$GO_LIBRESPOT_AUTHMODE" == "token" ]; then
+if [ "$GOLIBRESPOT_AUTHMODE" == "token" ]; then
   filename="config-spotify_token.yml"
 fi
 
-envsubst < "$CONFIG_BASE"/go-librespot/"$filename" > "$GO_LIBRESPOT_STATE"/config.yml
+envsubst < "$CONFIG_BASE"/go-librespot/"$filename" > "$GOLIBRESPOT_STATE"/config.yml
 
 trap 'echo ' ERR SIGINT SIGTERM
 pid=$(pgrep -f go-librespot)
@@ -15,10 +15,10 @@ pid=$(pgrep -f go-librespot)
     kill $pid
   fi
 
-if [ -f "$GO_LIBRESPOT_STATE/lockfile" ]; then
-  rm "$GO_LIBRESPOT_STATE/lockfile"
+if [ -f "$GOLIBRESPOT_STATE/lockfile" ]; then
+  rm "$GOLIBRESPOT_STATE/lockfile"
 fi
 
-/usr/local/bin/go-librespot --config_dir "$GO_LIBRESPOT_STATE" &
+/usr/local/bin/go-librespot --config_dir "$GOLIBRESPOT_STATE" &
 
 

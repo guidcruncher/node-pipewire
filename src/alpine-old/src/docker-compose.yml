@@ -10,8 +10,6 @@ services:
     environment:
       - TZ=Europe/London
       - MEMCACHE=true
-    volumes:
-      - ./tests:/tests
     ports:
       - 8000:8000
       - 1780:1780

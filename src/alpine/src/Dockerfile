@@ -1,51 +1,10 @@
 FROM alpine:latest AS base
-ARG TARGETARCH
-ARG NODE_VERSION=24
+ARG ARCH
+ARG SNAPCAST_VERSION=0.33.0
+ARG LIBRESPOT_VERSION=0.4.0
+ARG NODE_VERSION=22
 
-ENV DISPLAY=:0
-ENV PULSE_RUNTIME_PATH=/tmp/pulse/
-ENV PIPEWIRE_RUNTIME_DIR=/tmp/
-ENV TZ=UTC
-
-ENV DISPLAY=:43
-ENV XDG_CONFIG_HOME=/local/config
-ENV XDG_CACHE_HOME=/local/cache
-ENV XDG_DATA_HOME=/local/share
-ENV XDG_STATE_HOME=/local/state
-ENV XDG_RUNTIME_DIR=/tmp/runtime
-ENV XDG_DATA_DIRS=/usr/local/share:/usr/share
-ENV XDG_CONFIG_DIRS=/etc/xdg
-ENV GOLIBRESPOT_API=http://localhost:3678
-ENV GOLIBRESPOT_CREDENTIAL_TYPE=zeroconf
-ENV SPOTIFY_USERNAME=
-ENV SPOTIFY_TOKEN=
-ENV SPOTIFY_DEVICE_NAME=Pipewire
-ENV SPOTIFY_AUTHJSON=
-ENV RTKIT_ENABLE=true
-
-ENV PM2_BASE_HOME=${XDG_STATE_HOME}/pm2/base
-ENV PM2_CONTAINER_HOME=${XDG_STATE_HOME}/pm2/container
-ENV PM2_HOME=${PM2_CONTAINER_HOME}
-
-ENV ENABLE_SERVICES=go-librespot,snapserver,snapclient
-
-ENV ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
-ENV ALSA_PLAYBACK_RATE=44100
-ENV ALSA_PLAYBACK_FORMAT="S16LE"
-ENV ALSA_PLAYBACK_CHANNELS=2
-ENV ALSA_PLAYBACK_POSITION="FL,FR"
-ENV ALSA_BITS_PER_SAMPLE=16
-ENV ALSA_EQUAL_MUXER=""
-
-ENV SNAPSERVER_DATADIR=/local/config/snapserver/
-ENV SNAPSERVER_CODEC=flac
-ENV SNAPSERVER_CHUNK_MS=26
-ENV SNAPSERVER_BUFFER=1000
-ENV SNAPCLIENT_HOSTID=Pipewire-Local
-ENV SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
-ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT"
-ENV SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
-ENV MACHINE_NAME="Pipewire"
+COPY ./global/asound.conf /etc/asound.conf
 
 RUN <<EOF
 addgroup -S appgroup -g 1001
@@ -54,38 +13,6 @@ addgroup -S rtkit
 addgroup -S sudo
 getent group sudo
 adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
-
-mkdir -p /pipewire-config /usr/share/snapserver/snapweb /pipewire-config /usr/local/bin/node-pipewire.d /etc/xdg /usr/local/bin /tmp/logs
-chown appuser:appgroup /tmp/logs
-
-mkdir -p $XDG_CONFIG_HOME $XDG_CACHE_HOME $XDG_DATA_HOME \
-  $XDG_STATE_HOME $XDG_RUNTIME_DIR /local/.defaults
-chmod 700 $XDG_RUNTIME_DIR
-
-mkdir -p /usr/lib/ladspa/ /local/config/pm2 /local/.defaults
-mkdir -p ${XDG_CONFIG_HOME}/pipewire/pipewire.conf.d \
-${XDG_CONFIG_HOME}/pipewire/pipewire-pulse.conf.d \
-${XDG_CONFIG_HOME}/pipewire/client.conf.d \
-${XDG_CONFIG_HOME}/pipewire/filter-chain.conf.d \
-${XDG_CONFIG_HOME}/pipewire/jack.conf.d \
-${XDG_CONFIG_HOME}/pm2 \
-${PM2_BASE_HOME} ${PM2_CONTAINER_HOME}
-EOF
-
-COPY ./env.txt /local/.envbase
-COPY ./alsa-lib/ /
-COPY ./config/snapserver/snapserver.conf /etc/snapserver.conf
-COPY ./config/ ${XDG_CONFIG_HOME}/
-COPY ./config/ /local/.defaults/
-COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
-COPY ./alsa-lib/ /usr/lib/alsa
-COPY ./ladspa/ /usr/lib/ladspa/
-RUN mkdir -p /local/config/pm2/
-COPY ./ecosystem.config.cjs /local/config/pm2
-
-
-RUN <<EOF
-cp /local/.defaults/asound.conf /etc/asound.conf
 
 mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
@@ -101,7 +28,6 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
 
 adduser root lp
 adduser appuser lp
-
 mkdir -p /run/openrc
 touch /run/openrc/softlevel
 
@@ -110,27 +36,113 @@ echo "Defaults exempt_group = sudo " >>/etc/sudoers.d/nopasswd
 
 sed -i '/getty/d' /etc/inittab
 
-/usr/local/bin/update-golibrespot.sh
 npm install -g typescript ts-node tslib @types/node pm2
 
 ln -f -s "/usr/share/zoneinfo/$TZ" '/etc/localtime'
 echo "$TZ" | tee /etc/timezone
 EOF
 
-WORKDIR /app
-COPY ./mime.types /etc/mime.types
-COPY --chmod=755 ./entrypoint.sh /usr/local/bin/entrypoint.sh
-COPY --chmod=755 ./bootstrap.sh /usr/local/bin/bootstrap.sh
-COPY --chmod=755 ./pipewire-launcher.sh /usr/local/bin/pipewire-launcher.sh
-COPY --chmod=755 ./snapclient.sh /usr/local/bin/snapclient.sh
-COPY --chmod=755 ./update-golibrespot.sh /usr/local/bin/update-golibrespot.sh
-COPY --chmod=755 ./dbus.sh /etc/profile.d/dbus.sh
-COPY --chmod=755 ./capture-audio.sh /usr/local/bin/capture-audio.sh
-COPY --chmod=755 ./go-librespot.sh /usr/local/bin/go-librespot.sh
-COPY --chmod=755 ./snapserver.sh /usr/local/bin/snapserver.sh
-COPY --chmod=755 ./alsa-capabilities.sh /usr/local/bin/alsa-capabilities.sh
-COPY --chmod=755 ./pm2.sh /usr/local/bin/pm2.sh
-COPY --chmod=755 ./pm2base.sh /usr/local/bin/pm2base.sh
 
-CMD ["/usr/local/bin/entrypoint.sh"]
+RUN <<EOF
+useradd --system --shell /bin/bash -p none appuser
+passwd -d appuser
+
+curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
+apt install -y nodejs
+node -v
+
+mkdir ./sw
+cd ./sw
+
+TARGETARCH="$ARCH"
+
+if [ -z "$TARGETARCH" ]; then
+  TARGETARCH="$(uname -m)"
+fi
+
+if [ "$TARGETARCH" = "aarch64" ]; then
+  TARGETARCH="arm64"
+fi
+
+curl -L "https://github.com/badaix/snapcast/releases/download/v$SNAPCAST_VERSION/snapclient_$SNAPCAST_VERSION-1_""$TARGETARCH""_bookworm.deb" -o ./snapclient.deb
+curl -L "https://github.com/badaix/snapcast/releases/download/v""$SNAPCAST_VERSION""/snapserver_""$SNAPCAST_VERSION""-1_""$TARGETARCH""_bookworm_with-pipewire.deb" -o ./snapserver.deb
+curl -L "https://github.com/devgianlu/go-librespot/releases/download/v""$LIBRESPOT_VERSION""/go-librespot_linux_$TARGETARCH.tar.gz" -o ./librespot.tar.gz
+
+tar xvf ./librespot.tar.gz go-librespot
+chmod +x ./go-librespot
+mv ./go-librespot /usr/local/bin/
+
+mv /etc/snapserver.conf /etc/snapserver.bak
+
+apt install -y ./snapclient.deb
+apt install -y ./snapserver.deb
+apt -f install -y
+
+cd ..
+rm -rf ./sw
+
+apt-get clean && \
+rm -rf /var/lib/apt/lists/*
+npm install -g typescript ts-node tslib @types/node pm2
+mkdir -p /app /config
+EOF
+
+FROM base AS runtime
+
+ENV APP_BASE="/app"
+ENV APP_STARTUP="/app/startup"
+ENV CONFIG_BASE="/config"
+
+ENV XDG_RUNTIME_DIR=/tmp
+ENV PIPEWIRE_RUNTIME_DIR=/tmp
+ENV PULSE_RUNTIME_DIR=/tmp
+ENV DBUS_ADDRESS_DIR=/.dbus
+ENV DISPLAY=:0.0
+
+ENV ALSA_PLAYBACK_DEVICE="hw:AUDIO,0"
+ENV ALSA_PLAYBACK_RATE=48000
+ENV ALSA_PLAYBACK_FORMAT="S16LE"
+ENV ALSA_PLAYBACK_CHANNELS=2
+ENV ALSA_PLAYBACK_POSITION="FL,FR"
+ENV ALSA_EQUAL_MIXER="soundcard"
+ENV ALSA_BITS_PER_SAMPLE=16
+
+ENV SNAPSERVER_DATADIR=${CONFIG_BASE}/snapserver/
+ENV SNAPSERVER_CODEC=flac
+ENV SNAPSERVER_CHUNK_MS=26
+ENV SNAPSERVER_BUFFER=1000
+ENV SNAPCLIENT_HOSTID=Pipewire-Local
+ENV SNAPSERVER_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:$ALSA_PLAYBACK_CHANNELS"
+ENV SNAPSERVER_SOURCE="pipe:///tmp/snapfifo?name=pipewire&sampleformat=$SNAPSERVER_SAMPLEFORMAT"
+ENV SNAPCLIENT_SAMPLEFORMAT="$ALSA_PLAYBACK_RATE:$ALSA_BITS_PER_SAMPLE:*"
+
+ENV PM2_CONTAINER_HOME=/root/pm2/container
+ENV PM2_HOME=${PM2_CONTAINER_HOME}
+
+ENV GOLIBRESPOT_API="http://127.0.0.1:3678"
+ENV GOLIBRESPOT_AUTHMODE="zeroconf"
+ENV GOLIBRESPOT_STATE=${CONFIG_BASE}/go-librespot-state
+ENV SPOTIFY_USERNAME=""
+ENV SPOTIFY_TOKEN=""
+ENV SPOTIFY_DEVICE_NAME="go-librespot"
+ENV MACHINE_NAME=Pipewire-Docker
+
+RUN mkdir -p /etc/bashrc.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STATE
+
+WORKDIR ${APP_BASE}
+
+COPY ./config/ ${CONFIG_BASE}/
+COPY ./config/asound.conf /etc/asound.conf
+
+COPY ./startup/ ${APP_STARTUP}
+COPY ./scripts/*.sh /usr/local/bin/
+
+RUN chmod 755 /usr/local/bin/*.sh && \
+    chmod 755 $APP_STARTUP/*.sh && \
+    mv /usr/local/bin/bashrc.sh /etc/bashrc.d/bashrc.sh && \
+    echo ". /etc/bashrc.d/bashrc.sh" >> /etc/bash.bashrc
+
+WORKDIR ${APP_BASE}
+
+CMD ["/bin/bash", "/usr/local/bin/entrypoint.sh"]
 

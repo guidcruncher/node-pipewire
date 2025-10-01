@@ -124,7 +124,7 @@ RUN mkdir -p /etc/profile.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STA
 WORKDIR ${APP_BASE}
 
 COPY ./config/ ${CONFIG_BASE}/
-COPY ./config/asound.conf /etc/asound.conf
+COPY ./global/asound.conf /etc/asound.conf
 
 COPY ./startup/ ${APP_STARTUP}
 COPY ./scripts/*.sh /usr/local/bin/

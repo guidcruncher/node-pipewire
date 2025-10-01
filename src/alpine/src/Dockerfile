@@ -115,7 +115,6 @@ RUN mkdir -p /etc/bashrc.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STAT
 WORKDIR ${APP_BASE}
 
 COPY ./config/ ${CONFIG_BASE}/
-COPY ./config/asound.conf /etc/asound.conf
 
 COPY ./startup/ ${APP_STARTUP}
 COPY ./scripts/*.sh /usr/local/bin/

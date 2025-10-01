@@ -1,4 +1,4 @@
-FROM debian:bookworm AS base
+FROM debian:bookworm-slim AS base
 ARG ARCH
 ARG SNAPCAST_VERSION=0.33.0
 ARG LIBRESPOT_VERSION=0.4.0
@@ -36,12 +36,7 @@ RUN apt-get update && \
     xz-utils
 
 RUN <<EOF
-adduser --system \
-   --shell /bin/bash \
-   --gecos ‘User for managing of git version control’ \
-   --group \
-   --disabled-password \
-   appuser
+useradd --system --shell /bin/bash -p none appuser
 passwd -d appuser
 
 curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -

@@ -36,13 +36,21 @@ RUN apt-get update && \
     xz-utils
 
 RUN <<EOF
-useradd --system --shell /bin/bash -p none appuser
+groupadd -r -f -g 1001 appgroup
+groupadd -r -f pipewire
+groupadd -r -f rtkit
+groupadd -r -f sudo
+
+useradd --system --shell /bin/bash -u 1001 \
+  -G sudo  -G rtkit -G pipewire -G appgroup \
+  -p none appuser
 passwd -d appuser
 
 curl -fsSL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash -
 apt install -y nodejs
 node -v
 
+mkdir /.dbus
 mkdir ./sw
 cd ./sw
 

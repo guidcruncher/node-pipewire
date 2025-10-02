@@ -14,10 +14,12 @@ addgroup -S sudo
 getent group sudo
 adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
 
-mkdir -p /.dbus /etc/runlevels/default /etc/runlevels/sysinit \
+mkdir -p /run/user /tmp /.dbus /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
   /etc/runlevels/hotplugged /etc/runlevels/manual
 
+chmod 777 /tmp
+chmod 700 /run/user
 apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire wireplumber pipewire-pulse pipewire-jack pipewire-alsa \
@@ -76,9 +78,9 @@ ENV APP_STARTUP="/app/startup"
 ENV CONFIG_BASE="/config"
 
 ENV RTKIT_ENABLE=true
-ENV XDG_RUNTIME_DIR=/tmp
-ENV PIPEWIRE_RUNTIME_DIR=/tmp
-ENV PULSE_RUNTIME_DIR=/tmp
+ENV XDG_RUNTIME_DIR=/run/user
+ENV PIPEWIRE_RUNTIME_DIR=/run/user
+ENV PULSE_RUNTIME_DIR=/run/user
 ENV DBUS_ADDRESS_DIR=/.dbus
 ENV DISPLAY=:0.0
 

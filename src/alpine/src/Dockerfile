@@ -14,7 +14,7 @@ addgroup -S sudo
 getent group sudo
 adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/appuser -D
 
-mkdir -p /etc/runlevels/default /etc/runlevels/sysinit \
+mkdir -p /.dbus /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
   /etc/runlevels/hotplugged /etc/runlevels/manual
 

@@ -26,7 +26,8 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
-  curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst
+  curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst \
+  libsox-fmt-all sox caddy
 
 adduser root lp
 adduser appuser lp

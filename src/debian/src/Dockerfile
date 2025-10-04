@@ -10,6 +10,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     alsa-tools \
     alsa-utils \
+    libsox-fmt-all sox caddy \
     avahi-daemon \
     avahi-utils \
     bluez \

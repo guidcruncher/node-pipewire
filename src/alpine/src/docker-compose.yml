@@ -2,7 +2,7 @@ services:
   pipewire:
     extra_hosts:
       - pipewire:127.0.0.1
-#    network_mode: host
+    network_mode: host
     build:
       context: .
 #      network: host

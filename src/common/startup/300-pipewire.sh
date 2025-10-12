@@ -16,10 +16,6 @@ do
 envsubst < "$file" > /usr/share/pipewire/pipewire.conf.d/$(basename "$file")
 done
 
-if [ "$USE_PIPEWIRE_EQ" != "true" ]; then
-  rm /usr/share/pipewire/pipewire.conf.d/100-eq.conf
-fi
-
 fi
 
 if [ -d "$CONFIG_BASE""/pipewire/wireplumber.conf.d" ]; then

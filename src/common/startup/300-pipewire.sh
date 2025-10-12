@@ -59,5 +59,4 @@ pactl load-module module-pipe-sink file=/tmp/snapfifo \
     position="$ALSA_PLAYBACK_POSITION" \
     object.linger=1
 
-# pactl set-default-sink "$PW_DEFAULT_SINK"
 pactl set-default-sink "input.eq-sink"

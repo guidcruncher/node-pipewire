@@ -14,7 +14,7 @@ adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/a
 
 mkdir -p /run/user /tmp /.dbus /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
-  /etc/runlevels/hotplugged /etc/runlevels/manual
+  /etc/runlevels/hotplugged /etc/runlevels/manual /local/ir-responses
 
 chmod 777 /tmp
 chmod 700 /run/user
@@ -125,6 +125,7 @@ RUN mv ${CONFIG_BASE}/asound.conf /etc/asound.conf
 
 COPY ./common/startup/ ${APP_STARTUP}
 COPY ./common/scripts/ /usr/local/bin
+COPY ./common/ir-responses/ /local/ir-responses
 COPY ./startup/ ${APP_STARTUP}
 # COPY ./scripts/*.sh /usr/local/bin/
 

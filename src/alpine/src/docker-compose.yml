@@ -2,19 +2,19 @@ services:
   pipewire:
     extra_hosts:
       - pipewire:127.0.0.1
-    network_mode: host
+#    network_mode: host
     build:
       context: .
-      network: host
+#      network: host
       dockerfile: ./Dockerfile
     environment:
       - TZ=Europe/London
       - MEMCACHE=true
     volumes:
       - ./tests:/tests
-    ports:
-      - 8000:8000
-      - 1780:1780
+#    ports:
+#      - 8000:8000
+#      - 1780:1780
     container_name: pipewire
     hostname: pipewire
     restart: unless-stopped

@@ -112,7 +112,7 @@ ENV SPOTIFY_DEVICE_NAME="go-librespot"
 ENV MACHINE_NAME=Pipewire-Docker
 ENV WIREPLUMBER_CONFIG_DIR=/usr/share/pipewire
 ENV USE_PIPEWIRE_EQ=true
-ENV IR_RESPONSE_BASE="/local/ir-responses."
+ENV IR_RESPONSE_BASE="/local/ir-responses"
 
 ENV SDL_AUDIODRIVER=pulseaudio
 ENV PW_DEFAULT_SINK="snapcast-sink"

@@ -1,5 +1,10 @@
 #!/bin/bash
+
+if [ -z "$1" ]; then
 export IR_RESPONSE_FILE="$IR_RESPONSE_BASE"/"$IR_RESPONSE_FILENAME"
+else
+export IR_RESPONSE_FILE="$IR_RESPONSE_BASE"/"$1"
+fi
 
 mkdir -p "$XDG_RUNTIME_DIR"
 mkdir -p  "$PIPEWIRE_RUNTIME_DIR"

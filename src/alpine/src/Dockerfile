@@ -20,7 +20,7 @@ chmod 777 /tmp
 chmod 700 /run/user
 apk update
 apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
-  pipewire wireplumber pipewire-pulse pipewire-jack  \
+  pipewire wireplumber pipewire-pulse pipewire-jack  pipewire-libs \
   pipewire-tools libcamera rtkit pipewire-spa-bluez pipewire-spa-tools \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
@@ -113,6 +113,7 @@ ENV MACHINE_NAME=Pipewire-Docker
 ENV WIREPLUMBER_CONFIG_DIR=/usr/share/pipewire
 ENV USE_PIPEWIRE_EQ=true
 ENV IR_RESPONSE_BASE="/local/ir-responses"
+ENV IR_RESPONSE_FILENAME="bypass.wav"
 
 ENV SDL_AUDIODRIVER=pulseaudio
 ENV PW_DEFAULT_SINK="snapcast-sink"

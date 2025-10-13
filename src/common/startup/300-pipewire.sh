@@ -1,5 +1,6 @@
-
 #!/bin/bash
+export IR_RESPONSE_FILE="$IR_RESPONSE_BASE"/"$IR_RESPONSE_FILENAME"
+
 mkdir -p "$XDG_RUNTIME_DIR"
 mkdir -p  "$PIPEWIRE_RUNTIME_DIR"
 
@@ -44,15 +45,6 @@ fi
 
 . /usr/local/bin/pipewire-launcher.sh
 
-sleep 3
-mkdir -p /tmp/
-
-pactl load-module module-pipe-sink file=/tmp/snapfifo \
-    sink_name=snapcast-sink sink_properties=device.description=Snapcast \
-    format="$ALSA_PLAYBACK_FORMAT" rate=$ALSA_PLAYBACK_RATE \
-    channels=$ALSA_PLAYBACK_CHANNELS \
-    channel_map=front-left,front-right \
-    position="$ALSA_PLAYBACK_POSITION" \
-    object.linger=1
+sleep 2
 
 pactl set-default-sink "input.eq-sink"

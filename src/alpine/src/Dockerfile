@@ -1,4 +1,4 @@
-FROM alpine:latest AS base
+#FROM alpine:latest AS base
 ARG ARCH
 ARG SNAPCAST_VERSION=0.33.0
 ARG LIBRESPOT_VERSION=0.4.0
@@ -116,6 +116,11 @@ ENV USE_PIPEWIRE_EQ=true
 ENV SDL_AUDIODRIVER=pulseaudio
 ENV PW_DEFAULT_SINK="snapcast-sink"
 
+ENV MIXERDESK_BASE=/local/mixerdesk
+ENV IR_RESPONSE_BASE=/local/mixerdesk/impulse-responses
+ENV PARAMETRIC_IQ_BASE=/local/mixerdesk/parametric-iq
+RUN mkdir -p $IR_RESPONSE_BASE $PARAMETRIC_IQ_BASE $MIXERDESK_BASE
+COPY ./common/mixerdesk/ ${MIXERDESK_BASE}
 RUN mkdir -p /etc/bashrc.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STATE
 
 WORKDIR ${APP_BASE}

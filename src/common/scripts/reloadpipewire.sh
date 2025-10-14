@@ -1,6 +1,8 @@
 #!/bin/bash
 
-export IR_RESPONSE_FILE="$IR_RESPONSE_BASE"/"$IR_RESPONSE_FILENAME"
+export IR_RESPONSE_FILE="$IR_RESPONSE_BASE"/"$1"
+export IR_GAIN=$2
+export IR_DELAY=$3
 
 mkdir -p "$XDG_RUNTIME_DIR"
 mkdir -p  "$PIPEWIRE_RUNTIME_DIR"

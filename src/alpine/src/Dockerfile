@@ -1,4 +1,4 @@
-#FROM alpine:latest AS base
+FROM alpine:latest AS base
 ARG ARCH
 ARG SNAPCAST_VERSION=0.33.0
 ARG LIBRESPOT_VERSION=0.4.0

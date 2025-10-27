@@ -4,8 +4,8 @@ echo "Starting bluetooth services"
 
 rc-service bluetooth start 
 
-# btmgmt power off
+sleep 2
 
-# btmgmt power on
+bluealsa -p a2dp-sink hsp-hs &
 
 echo "Bluetooth services started."

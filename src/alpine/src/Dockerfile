@@ -14,8 +14,9 @@ adduser -S appuser -u 1001 -G sudo  -G rtkit -G pipewire -G appgroup  -h /home/a
 
 mkdir -p /run/user /tmp /.dbus /etc/runlevels/default /etc/runlevels/sysinit \
   /etc/runlevels/boot /etc/runlevels/shutdown \
-  /etc/runlevels/hotplugged /etc/runlevels/manual
-
+  /etc/runlevels/hotplugged /etc/runlevels/manual \
+  /var/lib/bluealsa /var/run/bluealsa /run/bluealsa
+ 
 chmod 777 /tmp
 chmod 700 /run/user
 apk update
@@ -25,7 +26,7 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
   curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst \
-  sox caddy bluez blueman hidapi bluez-btmgmt
+  sox caddy bluez blueman hidapi bluez-btmgmt bluez-alsa
 
 echo "uhid" > /etc/modules-load.d/uhid.conf
 echo "btusb" > /etc/modules-load.d/btusb.conf
@@ -95,6 +96,8 @@ ENV ALSA_PLAYBACK_POSITION="FL,FR"
 ENV ALSA_EQUAL_MIXER=
 ENV ALSA_BITS_PER_SAMPLE=16
 
+ENV BT_PAIR="00:16:94:44:AF:07"
+
 ENV SNAPSERVER_DATADIR=${CONFIG_BASE}/snapserver/
 ENV SNAPSERVER_CODEC=flac
 ENV SNAPSERVER_CHUNK_MS=26
@@ -130,14 +133,14 @@ RUN mkdir -p /etc/bashrc.d $CONFIG_BASE $APP_BASE $APP_STARTUP $GOLIBRESPOT_STAT
 WORKDIR ${APP_BASE}
 
 COPY ./config/ ${CONFIG_BASE}
-RUN mv ${CONFIG_BASE}/asound.conf /etc/asound.conf
+RUN mv ${CONFIG_BASE}/asound.conf /etc/asound.conf.template
 RUN cp ${CONFIG_BASE}/dbus/* /etc/dbus-1/ -r
 RUN rm -rf ${CONFIG_BASE}/dbus
 
 COPY ./common/startup/ ${APP_STARTUP}
 COPY ./common/scripts/ /usr/local/bin
 COPY ./startup/ ${APP_STARTUP}
-# COPY ./scripts/*.sh /usr/local/bin/
+COPY ./scripts/*.sh /usr/local/bin/
 
 RUN cp $APP_STARTUP/300-pipewire.sh /usr/local/bin/restart-pipewire.sh && \
     chmod 755 /usr/local/bin/*.sh && \

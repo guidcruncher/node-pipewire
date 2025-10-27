@@ -7,6 +7,8 @@ echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
 chmod 700 $XDG_RUNTIME_DIR
 mkdir -p /run/dbus
 
+dbus-uuidgen > /run/dbus/machine-id
+
   if [ -d "$DBUS_ADDRESS_DIR" ]; then
     rm -rf "$DBUS_ADDRESS_DIR"
   fi

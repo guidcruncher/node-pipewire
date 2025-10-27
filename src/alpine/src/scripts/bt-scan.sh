@@ -4,7 +4,7 @@ set -e
 SCAN_DURATION=${1:-10} # default to 10 seconds
 
 echo "[Bluetooth] Starting scan for $SCAN_DURATION seconds..."
-btmgmt find &
+btmgmt find
 SCAN_PID=$!
 
 sleep "$SCAN_DURATION"

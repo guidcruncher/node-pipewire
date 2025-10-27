@@ -25,4 +25,11 @@ sleep 3
     --sampleformat "$SNAPCLIENT_SAMPLEFORMAT" \
     --logsink stdout 
 
+if [ -n "$BT_PAIR" ]; then
+/usr/bin/snapclient -d --player alsa -s bluetooth --host 127.0.0.1 \
+    --hostID "$SNAPCLIENT_HOSTID-bluetooth" \
+    --sampleformat "$SNAPCLIENT_SAMPLEFORMAT" \
+    --logsink stdout
+fi
+
 echo "Snapcast started"

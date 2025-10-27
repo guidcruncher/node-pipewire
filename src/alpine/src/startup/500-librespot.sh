@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Starting librespot services"
+
 filename="config-zeroconf.yml"
 
 if [ "$GOLIBRESPOT_AUTHMODE" == "spotify_token" ]; then
@@ -29,3 +31,4 @@ else
   /usr/local/bin/go-librespot --config_dir "$GOLIBRESPOT_STATE" &
 fi
 
+echo "Librespot started"

@@ -1,5 +1,7 @@
-
 #!/bin/bash
+
+echo "Starting Pipewire services"
+
 mkdir -p "$XDG_RUNTIME_DIR"
 mkdir -p  "$PIPEWIRE_RUNTIME_DIR"
 
@@ -53,3 +55,5 @@ mkdir -p /tmp/
 
 # pactl set-default-sink "$PW_DEFAULT_SINK"
 pactl set-default-sink "input.eq-sink"
+
+echo "Pipewire started"

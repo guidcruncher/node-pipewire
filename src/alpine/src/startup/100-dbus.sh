@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Starting dbus services"
+
 echo "PRETTY_HOSTNAME=$MACHINE_NAME" > /etc/machine-info
 
 chmod 700 $XDG_RUNTIME_DIR
@@ -34,3 +36,4 @@ else
   export DISABLE_RTKIT=y
 fi
 
+echo "Dbus started"

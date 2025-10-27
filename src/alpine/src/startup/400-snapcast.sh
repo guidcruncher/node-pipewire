@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Starting snapcast services"
+
 envsubst < "$CONFIG_BASE"/snapserver/snapserver.conf > /etc/snapserver.conf
 
 pid=$(pgrep -f snapserver)
@@ -22,3 +24,5 @@ sleep 3
     --hostID "$SNAPCLIENT_HOSTID" \
     --sampleformat "$SNAPCLIENT_SAMPLEFORMAT" \
     --logsink stdout 
+
+echo "Snapcast started"

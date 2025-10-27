@@ -25,12 +25,13 @@ apk -U --no-cache add util-linux dbus dbus-x11 openrc mdevd-openrc sudo \
   alsa-tools alsa-utils alsaconf libpulse avahi libgcc gcompat alsa-lib \
   alsa-plugins snapcast ffmpeg ffplay bluez unzip icu-data-full \
   curl nano jq xz gzip nodejs-current npm tzdata su-exec envsubst \
-  sox caddy
+  sox caddy bluez blueman 
 
 adduser root lp
 adduser appuser lp
-mkdir -p /run/openrc
-  touch /run/openrc/softlevel
+mkdir -p /run/openrc /etc/dbus-1
+
+touch /run/openrc/softlevel
 
 echo "%sudo ALL = (ALL) NOPASSWD: ALL " >/etc/sudoers.d/nopasswd
 echo "Defaults exempt_group = sudo " >>/etc/sudoers.d/nopasswd
@@ -127,6 +128,8 @@ WORKDIR ${APP_BASE}
 
 COPY ./config/ ${CONFIG_BASE}
 RUN mv ${CONFIG_BASE}/asound.conf /etc/asound.conf
+RUN cp ${CONFIG_BASE}/dbus/* /etc/dbus-1/ -r
+RUN rm -rf ${CONFIG_BASE}/dbus
 
 COPY ./common/startup/ ${APP_STARTUP}
 COPY ./common/scripts/ /usr/local/bin
